@@ -3,7 +3,7 @@
 Interactive comparative analysis of three families of generative models: VAE, GAN and diffusion models.
 Seminar 2 of the course "Generative AI: Technologies and Applications", al-Farabi Kazakh National University, 2026.
 
-**Live page:** https://dybys.me/genai-seminar-2/
+**Live page:** https://aleka07.github.io/genai-seminar-2/
 
 What is inside:
 - three samplers turning the same Gaussian noise into a 2D Swiss roll (VAE blur, GAN mode collapse, diffusion steps);
