@@ -1,0 +1,211 @@
+  <!-- ============ Timeline ============ -->
+  <section class="sec wrap" id="time" aria-labelledby="h-time">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow mono">История</p>
+        <h2 id="h-time">Десять лет: от&nbsp;размытых цифр до&nbsp;видео</h2>
+      </div>
+      <p class="intro">До 2020 года лучшие картинки делали GAN. В 2021 диффузия обошла их по качеству<a class="cite" href="#ref-8">[8]</a>, а VAE стал её частью: автоэнкодером, в чьём латенте работает Stable Diffusion.</p>
+    </div>
+
+    <div class="tm-bar">
+      <div class="tm-filt">
+        <p class="tm-hint mono" id="time-hint-f"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h12l-4.6 5.4V13l-2.8-1.4V8.4z"/></svg>фильтр по семейству</p>
+        <div class="tm-chips" role="group" aria-label="Фильтр событий по семейству моделей">
+          <button type="button" class="tm-chip" id="time-f-all" data-f="all" aria-pressed="true"><span class="tm-cdots" aria-hidden="true"><span class="dot m-vae"></span><span class="dot m-gan"></span><span class="dot m-dif"></span></span>Все<span class="tm-n" data-n="all"></span></button>
+          <button type="button" class="tm-chip m-vae" id="time-f-vae" data-f="vae" aria-pressed="false"><span class="dot"></span>VAE<span class="tm-n" data-n="vae"></span></button>
+          <button type="button" class="tm-chip m-gan" id="time-f-gan" data-f="gan" aria-pressed="false"><span class="dot"></span>GAN<span class="tm-n" data-n="gan"></span></button>
+          <button type="button" class="tm-chip m-dif" id="time-f-dif" data-f="dif" aria-pressed="false"><span class="dot"></span>Diffusion<span class="tm-n" data-n="dif"></span></button>
+        </div>
+      </div>
+      <div class="tm-play">
+        <button type="button" class="tm-pbtn" id="time-play" aria-pressed="false"><svg viewBox="0 0 12 12" aria-hidden="true"><path class="tm-tri" d="M3 1.6v8.8L10.4 6z"/><path class="tm-sq" d="M2.5 2.5h7v7h-7z"/></svg><span class="tm-plbl">Проиграть историю</span></button>
+        <p class="tm-pst mono" id="time-pst" aria-live="polite"></p>
+      </div>
+    </div>
+    <p class="tm-hint tm-hint-e mono" id="time-hint-e"><svg viewBox="0 0 16 16" aria-hidden="true"><circle class="tm-ring" cx="8" cy="8" r="6.2"/><circle cx="8" cy="8" r="2.4"/></svg><span>нажми на событие — подробности</span><span class="tm-keys"><span class="tm-k">←</span><span class="tm-k">→</span>по событиям</span></p>
+
+    <div class="tm-stage" id="time-stage">
+      <div class="tm-era" aria-hidden="true">
+        <span class="tm-eb m-gan"><span class="tm-el">Лидер по качеству: GAN</span></span>
+        <span class="tm-eb m-dif"><span class="tm-el">Лидер по качеству: диффузия</span></span>
+      </div>
+      <ol class="tl" aria-label="События 2013–2024">
+        <li class="yr"><span class="y">2013</span><div class="evs">
+          <div class="ev" data-m="vae">
+            <button type="button" class="ev-b" id="time-e-vae" aria-expanded="false" aria-controls="time-d-vae"><span class="ev-t"><span class="ev-dots"><span class="dot m-vae"></span></span>VAE</span><span class="ev-s">Kingma, Welling: вариационный автоэнкодер</span></button>
+            <div class="ev-d" id="time-d-vae" hidden><div class="ev-di">
+              <p class="d-meta mono">arXiv, декабрь 2013 · ICLR 2014</p>
+              <p class="d-pap"><i>Auto-Encoding Variational Bayes.</i> Kingma D. P., Welling M.</p>
+              <p class="d-why">Энкодер и декодер учатся вместе, максимизируя нижнюю оценку правдоподобия (ELBO). Трюк репараметризации <span class="d-m">z = μ + σ⊙ε</span> пропускает градиент сквозь сэмплирование, поэтому хватает обычного backprop.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/1312.6114" target="_blank" rel="noopener">arXiv:1312.6114</a><a class="cite" href="#ref-3">[3]</a></p>
+            </div></div>
+          </div>
+        </div></li>
+        <li class="yr"><span class="y">2014</span><span class="tm-etag m-gan" aria-hidden="true">Лидер по качеству: GAN</span><div class="evs">
+          <div class="ev" data-m="gan">
+            <button type="button" class="ev-b" id="time-e-gan" aria-expanded="false" aria-controls="time-d-gan"><span class="ev-t"><span class="ev-dots"><span class="dot m-gan"></span></span>GAN</span><span class="ev-s">Goodfellow и др.: состязательное обучение</span></button>
+            <div class="ev-d" id="time-d-gan" hidden><div class="ev-di">
+              <p class="d-meta mono">NeurIPS 2014</p>
+              <p class="d-pap"><i>Generative Adversarial Nets.</i> Goodfellow I. и др.</p>
+              <p class="d-why">Генератор учится не по правдоподобию, а по сигналу дискриминатора, который отличает подделки от данных. Отсюда чёткие образцы, но и нестабильная минимакс-игра с mode collapse.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/1406.2661" target="_blank" rel="noopener">arXiv:1406.2661</a><a class="cite" href="#ref-4">[4]</a></p>
+            </div></div>
+          </div>
+        </div></li>
+        <li class="yr"><span class="y">2015</span><div class="evs">
+          <div class="ev" data-m="dif">
+            <button type="button" class="ev-b" id="time-e-sd15" aria-expanded="false" aria-controls="time-d-sd15"><span class="ev-t"><span class="ev-dots"><span class="dot m-dif"></span></span>Диффузия</span><span class="ev-s">Sohl-Dickstein и др.: идея из термодинамики</span></button>
+            <div class="ev-d" id="time-d-sd15" hidden><div class="ev-di">
+              <p class="d-meta mono">ICML 2015</p>
+              <p class="d-pap"><i>Deep Unsupervised Learning using Nonequilibrium Thermodynamics.</i> Sohl-Dickstein J., Weiss E., Maheswaranathan N., Ganguli S.</p>
+              <p class="d-why">Идея из неравновесной физики: разрушать данные шумом за много мелких шагов и учить сеть обратному процессу. По качеству картинок модель тогда уступала, и к идее вернулись через пять лет в DDPM.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/1503.03585" target="_blank" rel="noopener">arXiv:1503.03585</a></p>
+            </div></div>
+          </div>
+          <div class="ev" data-m="gan">
+            <button type="button" class="ev-b" id="time-e-dcgan" aria-expanded="false" aria-controls="time-d-dcgan"><span class="ev-t"><span class="ev-dots"><span class="dot m-gan"></span></span>DCGAN</span><span class="ev-s">Свёрточные GAN, обучение стабильнее</span></button>
+            <div class="ev-d" id="time-d-dcgan" hidden><div class="ev-di">
+              <p class="d-meta mono">arXiv 2015 · ICLR 2016</p>
+              <p class="d-pap"><i>Unsupervised Representation Learning with Deep Convolutional Generative Adversarial Networks.</i> Radford A., Metz L., Chintala S.</p>
+              <p class="d-why">Набор правил архитектуры (свёртки со stride вместо pooling, batch norm, без полносвязных слоёв), с которыми GAN стабильно учатся на картинках. Векторы z можно складывать: «мужчина в очках» − «мужчина» + «женщина» даёт женщину в очках.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/1511.06434" target="_blank" rel="noopener">arXiv:1511.06434</a></p>
+            </div></div>
+          </div>
+        </div></li>
+        <li class="yr"><span class="y">2017</span><div class="evs">
+          <div class="ev" data-m="gan">
+            <button type="button" class="ev-b" id="time-e-wgan" aria-expanded="false" aria-controls="time-d-wgan"><span class="ev-t"><span class="ev-dots"><span class="dot m-gan"></span></span>WGAN</span><span class="ev-s">Расстояние Вассерштейна вместо <span class="nw">JS-дивергенции</span></span></button>
+            <div class="ev-d" id="time-d-wgan" hidden><div class="ev-di">
+              <p class="d-meta mono">ICML 2017</p>
+              <p class="d-pap"><i>Wasserstein GAN.</i> Arjovsky M., Chintala S., Bottou L.</p>
+              <p class="d-why">Когда распределения почти не пересекаются, дивергенция Йенсена–Шеннона насыщается и градиент генератора пропадает. Расстояние Вассерштейна этого лишено, а значение лосса стало осмысленной кривой обучения.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/1701.07875" target="_blank" rel="noopener">arXiv:1701.07875</a></p>
+            </div></div>
+          </div>
+          <div class="ev" data-m="vae">
+            <button type="button" class="ev-b" id="time-e-vqvae" aria-expanded="false" aria-controls="time-d-vqvae"><span class="ev-t"><span class="ev-dots"><span class="dot m-vae"></span></span>VQ-VAE</span><span class="ev-s">Дискретный латент</span></button>
+            <div class="ev-d" id="time-d-vqvae" hidden><div class="ev-di">
+              <p class="d-meta mono">NeurIPS 2017</p>
+              <p class="d-pap"><i>Neural Discrete Representation Learning.</i> van den Oord A., Vinyals O., Kavukcuoglu K.</p>
+              <p class="d-why">Латент — индексы в обучаемом словаре векторов (codebook), а prior над ними учит отдельная авторегрессионная модель. VAE избавился от posterior collapse, а картинка превратилась в последовательность токенов.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/1711.00937" target="_blank" rel="noopener">arXiv:1711.00937</a></p>
+            </div></div>
+          </div>
+        </div></li>
+        <li class="yr"><span class="y">2018</span><div class="evs">
+          <div class="ev" data-m="gan">
+            <button type="button" class="ev-b" id="time-e-stylegan" aria-expanded="false" aria-controls="time-d-stylegan"><span class="ev-t"><span class="ev-dots"><span class="dot m-gan"></span></span>StyleGAN</span><span class="ev-s">Фотореалистичные лица</span></button>
+            <div class="ev-d" id="time-d-stylegan" hidden><div class="ev-di">
+              <p class="d-meta mono">arXiv 2018 · CVPR 2019</p>
+              <p class="d-pap"><i>A Style-Based Generator Architecture for Generative Adversarial Networks.</i> Karras T., Laine S., Aila T.</p>
+              <p class="d-why">Шум сначала проходит mapping-сеть, а затем управляет «стилем» каждого масштаба через AdaIN, поэтому крупные черты лица отделяются от мелких. Вместе с моделью вышел датасет лиц FFHQ 1024×1024.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/1812.04948" target="_blank" rel="noopener">arXiv:1812.04948</a><a class="cite" href="#ref-9">[9]</a></p>
+            </div></div>
+          </div>
+          <div class="ev" data-m="gan">
+            <button type="button" class="ev-b" id="time-e-biggan" aria-expanded="false" aria-controls="time-d-biggan"><span class="ev-t"><span class="ev-dots"><span class="dot m-gan"></span></span>BigGAN</span><span class="ev-s">ImageNet, 512 px</span></button>
+            <div class="ev-d" id="time-d-biggan" hidden><div class="ev-di">
+              <p class="d-meta mono">ICLR 2019</p>
+              <p class="d-pap"><i>Large Scale GAN Training for High Fidelity Natural Image Synthesis.</i> Brock A., Donahue J., Simonyan K.</p>
+              <p class="d-why">Масштаб (батч 2048, ImageNet до 512 px) поднял Inception Score на ImageNet 128×128 с 52.5 до 166.5. Truncation trick сужает шум: качество растёт, разнообразие падает. Это тот же компромисс, что в трилемме.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/1809.11096" target="_blank" rel="noopener">arXiv:1809.11096</a></p>
+            </div></div>
+          </div>
+        </div></li>
+        <li class="yr"><span class="y">2020</span><div class="evs">
+          <div class="ev" data-m="dif">
+            <button type="button" class="ev-b" id="time-e-ddpm" aria-expanded="false" aria-controls="time-d-ddpm"><span class="ev-t"><span class="ev-dots"><span class="dot m-dif"></span></span>DDPM</span><span class="ev-s">Ho и др.: диффузия догоняет GAN</span></button>
+            <div class="ev-d" id="time-d-ddpm" hidden><div class="ev-di">
+              <p class="d-meta mono">NeurIPS 2020</p>
+              <p class="d-pap"><i>Denoising Diffusion Probabilistic Models.</i> Ho J., Jain A., Abbeel P.</p>
+              <p class="d-why">Обучение сведено к простой регрессии: по зашумлённому <span class="d-m">x<sub>t</sub></span> предсказать добавленный шум <span class="d-m">ε</span> (MSE). FID 3.17 на <span class="nw">CIFAR-10</span>: качество уровня GAN без состязательной игры.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/2006.11239" target="_blank" rel="noopener">arXiv:2006.11239</a><a class="cite" href="#ref-5">[5]</a></p>
+            </div></div>
+          </div>
+          <div class="ev" data-m="dif">
+            <button type="button" class="ev-b" id="time-e-ddim" aria-expanded="false" aria-controls="time-d-ddim"><span class="ev-t"><span class="ev-dots"><span class="dot m-dif"></span></span>DDIM</span><span class="ev-s">50 шагов вместо 1000</span></button>
+            <div class="ev-d" id="time-d-ddim" hidden><div class="ev-di">
+              <p class="d-meta mono">arXiv 2020 · ICLR 2021</p>
+              <p class="d-pap"><i>Denoising Diffusion Implicit Models.</i> Song J., Meng C., Ermon S.</p>
+              <p class="d-why">Тот же обученный DDPM, но детерминированный сэмплер, который перепрыгивает через шаги: в 10–50 раз быстрее без переобучения. Шум однозначно задаёт картинку, поэтому между образцами можно интерполировать.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/2010.02502" target="_blank" rel="noopener">arXiv:2010.02502</a></p>
+            </div></div>
+          </div>
+        </div></li>
+        <li class="yr"><span class="y">2021</span><span class="tm-etag m-dif" aria-hidden="true">Лидер по качеству: диффузия</span><div class="evs">
+          <div class="ev" data-m="dif">
+            <button type="button" class="ev-b" id="time-e-adm" aria-expanded="false" aria-controls="time-d-adm"><span class="ev-t"><span class="ev-dots"><span class="dot m-dif"></span></span>ADM</span><span class="ev-s">«Diffusion Models Beat GANs»</span></button>
+            <div class="ev-d" id="time-d-adm" hidden><div class="ev-di">
+              <p class="d-meta mono">NeurIPS 2021</p>
+              <p class="d-pap"><i>Diffusion Models Beat GANs on Image Synthesis.</i> Dhariwal P., Nichol A.</p>
+              <p class="d-why">Улучшенная U-Net и classifier guidance: градиент классификатора обменивает разнообразие на качество. Диффузия обходит BigGAN по FID на ImageNet, и с этой работы лидер по качеству — диффузия.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/2105.05233" target="_blank" rel="noopener">arXiv:2105.05233</a><a class="cite" href="#ref-8">[8]</a></p>
+            </div></div>
+          </div>
+          <div class="ev" data-m="vae">
+            <button type="button" class="ev-b" id="time-e-dalle" aria-expanded="false" aria-controls="time-d-dalle"><span class="ev-t"><span class="ev-dots"><span class="dot m-vae"></span></span>DALL·E</span><span class="ev-s">dVAE + трансформер</span></button>
+            <div class="ev-d" id="time-d-dalle" hidden><div class="ev-di">
+              <p class="d-meta mono">ICML 2021</p>
+              <p class="d-pap"><i>Zero-Shot Text-to-Image Generation.</i> Ramesh A. и др.</p>
+              <p class="d-why">dVAE сжимает картинку 256×256 в сетку 32×32 токенов, а трансформер на 12 млрд параметров дописывает их после токенов текста. Это ещё не диффузия: VAE здесь работает токенизатором.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/2102.12092" target="_blank" rel="noopener">arXiv:2102.12092</a></p>
+            </div></div>
+          </div>
+        </div></li>
+        <li class="yr"><span class="y">2022</span><div class="evs">
+          <div class="ev" data-m="vae dif">
+            <button type="button" class="ev-b" id="time-e-ldm" aria-expanded="false" aria-controls="time-d-ldm"><span class="ev-t"><span class="ev-dots"><span class="dot m-vae"></span><span class="dot m-dif"></span></span>Stable Diffusion</span><span class="ev-s">Диффузия в латенте VAE</span></button>
+            <div class="ev-d" id="time-d-ldm" hidden><div class="ev-di">
+              <p class="d-meta mono">CVPR 2022 · веса открыты в августе 2022</p>
+              <p class="d-pap"><i>High-Resolution Image Synthesis with Latent Diffusion Models.</i> Rombach R., Blattmann A., Lorenz D., Esser P., Ommer B.</p>
+              <p class="d-why">Диффузия идёт в латенте автоэнкодера, сжатом в 8 раз по каждой стороне, поэтому обучение и генерация в разы дешевле. Открытые веса Stable Diffusion сделали text-to-image массовым.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/2112.10752" target="_blank" rel="noopener">arXiv:2112.10752</a><a class="cite" href="#ref-6">[6]</a></p>
+            </div></div>
+          </div>
+          <div class="ev" data-m="dif">
+            <button type="button" class="ev-b" id="time-e-t2i" aria-expanded="false" aria-controls="time-d-t2i"><span class="ev-t"><span class="ev-dots"><span class="dot m-dif"></span></span>DALL·E 2, Imagen</span><span class="ev-s">Text-to-image</span></button>
+            <div class="ev-d" id="time-d-t2i" hidden><div class="ev-di">
+              <p class="d-meta mono">2022 · arXiv (DALL·E 2) · NeurIPS (Imagen)</p>
+              <p class="d-pap"><i>Hierarchical Text-Conditional Image Generation with CLIP Latents.</i> Ramesh A. и др. <i>Photorealistic Text-to-Image Diffusion Models with Deep Language Understanding.</i> Saharia C. и др.</p>
+              <p class="d-why">Обе модели — каскады диффузии с повышением разрешения. DALL·E 2 сначала предсказывает по тексту CLIP-эмбеддинг картинки, Imagen берёт эмбеддинги замороженной языковой модели T5 и показывает, что масштаб текстового энкодера важнее масштаба U-Net.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/2204.06125" target="_blank" rel="noopener">arXiv:2204.06125</a><a href="https://arxiv.org/abs/2205.11487" target="_blank" rel="noopener">arXiv:2205.11487</a></p>
+            </div></div>
+          </div>
+        </div></li>
+        <li class="yr"><span class="y">2023</span><div class="evs">
+          <div class="ev" data-m="dif">
+            <button type="button" class="ev-b" id="time-e-cm" aria-expanded="false" aria-controls="time-d-cm"><span class="ev-t"><span class="ev-dots"><span class="dot m-dif"></span></span>Consistency</span><span class="ev-s">Генерация за 1–4 шага</span></button>
+            <div class="ev-d" id="time-d-cm" hidden><div class="ev-di">
+              <p class="d-meta mono">ICML 2023</p>
+              <p class="d-pap"><i>Consistency Models.</i> Song Y., Dhariwal P., Chen M., Sutskever I.</p>
+              <p class="d-why">Сеть учится переводить любую точку траектории денойзинга сразу в её начало <span class="d-m">x<sub>0</sub></span>. Генерация возможна за один шаг, 2–4 шага добавляют качество; обучают дистилляцией из диффузии или с нуля.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/2303.01469" target="_blank" rel="noopener">arXiv:2303.01469</a></p>
+            </div></div>
+          </div>
+          <div class="ev" data-m="dif">
+            <button type="button" class="ev-b" id="time-e-sdxl" aria-expanded="false" aria-controls="time-d-sdxl"><span class="ev-t"><span class="ev-dots"><span class="dot m-dif"></span></span>SDXL</span><span class="ev-s">1024 px</span></button>
+            <div class="ev-d" id="time-d-sdxl" hidden><div class="ev-di">
+              <p class="d-meta mono">arXiv 2023 · ICLR 2024</p>
+              <p class="d-pap"><i>SDXL: Improving Latent Diffusion Models for High-Resolution Image Synthesis.</i> Podell D. и др.</p>
+              <p class="d-why">Та же латентная диффузия, но U-Net втрое больше, два текстовых энкодера и отдельная refiner-модель для мелких деталей. Базовое разрешение 1024×1024.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/2307.01952" target="_blank" rel="noopener">arXiv:2307.01952</a></p>
+            </div></div>
+          </div>
+        </div></li>
+        <li class="yr"><span class="y">2024</span><div class="evs">
+          <div class="ev" data-m="dif">
+            <button type="button" class="ev-b" id="time-e-dit" aria-expanded="false" aria-controls="time-d-dit"><span class="ev-t"><span class="ev-dots"><span class="dot m-dif"></span></span>Sora, SD3</span><span class="ev-s">Диффузионные трансформеры, видео</span></button>
+            <div class="ev-d" id="time-d-dit" hidden><div class="ev-di">
+              <p class="d-meta mono">2024 · отчёт OpenAI (Sora) · ICML (SD3)</p>
+              <p class="d-pap"><i>Scaling Rectified Flow Transformers for High-Resolution Image Synthesis.</i> Esser P. и др. Sora: технический отчёт OpenAI, февраль 2024, без статьи на arXiv.</p>
+              <p class="d-why">U-Net сменился трансформером (DiT, Peebles и Xie, 2022). SD3 обучен как rectified flow с прямыми траекториями от шума к данным; Sora режет латент видео на пространственно-временные патчи и генерирует ролики до минуты.</p>
+              <p class="d-lnk mono"><a href="https://arxiv.org/abs/2403.03206" target="_blank" rel="noopener">arXiv:2403.03206</a><a href="https://arxiv.org/abs/2212.09748" target="_blank" rel="noopener">DiT: arXiv:2212.09748</a></p>
+            </div></div>
+          </div>
+        </div></li>
+      </ol>
+      <span class="tm-head" aria-hidden="true"></span>
+      <div class="tm-card" id="time-card" role="region" aria-label="Подробности события" hidden><div class="tm-cin" id="time-cin"></div></div>
+    </div>
+  </section>

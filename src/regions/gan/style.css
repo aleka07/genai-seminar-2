@@ -1,0 +1,97 @@
+/* GAN lab: living G-vs-D diagram + a real 1D GAN trained live. Everything scoped under .ganl. */
+.ganl { position: relative; }
+
+/* ---- diagram ---- */
+.ganl-svg .ganl-b { cursor: pointer; outline: none; }
+.ganl-svg .ganl-hit { fill: transparent; stroke: none; }
+.ganl-svg .ganl-b .ganl-box { transition: stroke .25s, fill .25s; }
+.ganl-svg .ganl-b:hover .ganl-box, .ganl-svg .ganl-b.on .ganl-box { stroke: var(--fg); }
+.ganl-svg .ganl-b.on .ganl-box { fill: color-mix(in srgb, var(--fg) 6%, transparent); }
+.ganl-svg .ganl-b.on .ganl-hit { fill: color-mix(in srgb, var(--fg) 4%, transparent); stroke: var(--line-strong); stroke-width: 1; stroke-dasharray: 3 4; }
+.ganl-svg .ganl-b.on .d-lbl { fill: var(--fg); }
+.ganl-svg .ganl-b:focus-visible .ganl-box, .ganl-svg .ganl-b:focus-visible .ganl-hit { stroke: var(--fg); stroke-width: 2; }
+.ganl-svg .ganl-vd { font-variant-numeric: tabular-nums; font-size: 18px; transition: fill .3s; }
+.ganl-svg .ganl-vd.lo { fill: var(--gan); }
+.ganl-svg #gan-dbox.flash { stroke: var(--gan); stroke-width: 2; }
+.ganl-svg .ganl-b.gflash .ganl-box { stroke: var(--gan); stroke-width: 2; }
+.ganl-svg .ganl-pulse { fill: none; stroke: var(--gan); stroke-width: 3.5; stroke-linecap: round; opacity: 0; filter: drop-shadow(0 0 4px var(--gan)); }
+.ganl-svg #gan-parts circle { pointer-events: none; }
+
+.ganl-exp { margin-top: 8px; min-height: 64px; }
+.ganl-line { margin: 6px 0 0; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 12px; align-items: baseline; font-size: 16px; line-height: 1.5; color: var(--fg); text-wrap: pretty; }
+.ganl-line b { font-weight: 500; color: var(--gan); text-transform: none; letter-spacing: 0; font-size: 13px; min-width: 3.2ch; }
+.ganl-line span { transition: opacity .25s; }
+.ganl-line.swap span { opacity: 0; }
+.ganl-cap1 { margin-top: 10px !important; }
+
+/* hints: mono label + small glyph; dim (not gone) after the first real interaction */
+.ganl-hint { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--muted); font-size: 11.5px; text-transform: none; letter-spacing: .03em; transition: opacity .6s; }
+.ganl-hint svg { width: 11px; height: 12px; flex: none; fill: var(--gan); }
+.ganl.used-d #gan-hint-d, .ganl.used-s #gan-hint-s { opacity: .55; }
+
+/* ---- simulator ---- */
+.ganl-sim { margin-top: clamp(26px, 3vw, 38px); padding-top: 14px; border-top: 1px solid var(--line-strong); }
+.ganl-head { display: flex; justify-content: space-between; align-items: baseline; gap: 6px 16px; flex-wrap: wrap; }
+.ganl-head p { margin: 0; }
+.ganl-title { color: var(--fg); }
+.ganl-it { color: var(--muted); font-variant-numeric: tabular-nums; }
+.ganl-it b { color: var(--fg); font-weight: 500; display: inline-block; min-width: 5ch; text-align: right; }
+.ganl-stage { position: relative; margin-top: 8px; }
+.ganl-stage canvas { display: block; width: 100%; height: clamp(250px, 24vw, 310px); touch-action: pan-y; }
+
+.ganl-sparks { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px 28px; margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--line); }
+.ganl-spark { min-width: 0; }
+.ganl-sh { margin: 0 0 4px; color: var(--muted); font-size: 10.5px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.ganl-nt { text-transform: none; letter-spacing: 0; font-size: 12px; }
+.ganl-sw { display: inline-block; width: 12px; height: 2px; vertical-align: middle; }
+.ganl-sw.r { background: var(--fg); }
+.ganl-sw.f { background: var(--gan); }
+.ganl-spark canvas { display: block; width: 100%; height: 56px; }
+.ganl-read { margin: 4px 0 0; font: 400 12.5px/1.4 var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+.ganl-read b { color: var(--fg); font-weight: 500; display: inline-block; min-width: 4.4ch; }
+
+.ganl-ctrl { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 10px; margin-top: 16px; }
+.ganl-btn, .ganl-seg {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 0 14px;
+  background: transparent; color: var(--fg); border: 1px solid var(--line-strong); border-radius: 999px; cursor: pointer;
+  font: 500 12px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap;
+  transition: border-color .2s, background .2s, transform .08s;
+  -webkit-tap-highlight-color: transparent;
+}
+.ganl-btn:hover, .ganl-seg:hover { border-color: var(--fg); }
+.ganl-btn:active, .ganl-seg:active { transform: scale(.97); }
+.ganl-btn svg { width: 11px; height: 11px; flex: none; fill: currentColor; }
+.ganl-btn svg.i-st { fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.ganl-play { border-color: var(--gan); min-width: 128px; }
+.ganl-play svg { fill: var(--gan); }
+.ganl-play .i-pause { display: none; }
+.ganl-play[aria-pressed="true"] .i-play { display: none; }
+.ganl-play[aria-pressed="true"] .i-pause { display: block; }
+.ganl-play[aria-pressed="true"] { background: color-mix(in srgb, var(--gan) 12%, transparent); }
+.ganl-speed { display: inline-flex; align-items: center; gap: 0; }
+.ganl-speed > span { color: var(--muted); font-size: 11px; margin-right: 8px; }
+.ganl-seg { padding: 0 11px; border-radius: 0; margin-left: -1px; text-transform: none; letter-spacing: .02em; }
+.ganl-seg:first-of-type { border-radius: 999px 0 0 999px; margin-left: 0; }
+.ganl-seg:last-of-type { border-radius: 0 999px 999px 0; }
+.ganl-seg[aria-pressed="true"] { background: color-mix(in srgb, var(--fg) 12%, transparent); border-color: var(--fg); position: relative; z-index: 1; }
+.ganl-tg { width: 22px; height: 12px; border-radius: 6px; border: 1px solid var(--line-strong); position: relative; flex: none; transition: background .2s, border-color .2s; }
+.ganl-tg::after { content: ""; position: absolute; top: 2px; left: 2px; width: 6px; height: 6px; border-radius: 50%; background: var(--muted); transition: transform .2s, background .2s; }
+.ganl-two[aria-pressed="true"] { border-color: var(--gan); }
+.ganl-two[aria-pressed="true"] .ganl-tg { border-color: var(--gan); }
+.ganl-two[aria-pressed="true"] .ganl-tg::after { transform: translateX(10px); background: var(--gan); }
+#gan-hint-s { margin-top: 12px; }
+.ganl-m { font: 400 .86em var(--f-mono); color: var(--fg); white-space: nowrap; }
+.ganl-cap2 { margin-top: 14px !important; }
+
+@media (max-width: 520px) {
+  .ganl-svg .d-lbl { font-size: 13.5px; }
+  .ganl-line { font-size: 15.5px; }
+  .ganl-sparks { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .ganl-stage canvas { height: 250px; }
+  .ganl-btn, .ganl-seg { min-height: 44px; }
+  .ganl-play { min-width: 0; }
+  .ganl-speed > span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ganl-line span, .ganl-hint { transition: none; }
+}

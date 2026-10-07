@@ -1,0 +1,90 @@
+        <figure class="fig ganl" id="gan-fig" style="margin:0">
+          <svg class="ganl-svg" id="gan-svg" viewBox="0 0 640 350" role="group" aria-label="Схема GAN: шум z, генератор, подделка, реальные данные, дискриминатор, его ответ и градиент обратно в генератор. Блоки можно выбрать, чтобы прочитать пояснение.">
+            <path class="flow" id="gan-p1" d="M80 232 H108"/>
+            <path class="flow" id="gan-p2" d="M232 232 H274"/>
+            <path class="flow" id="gan-p3" d="M338 232 Q380 232 398 178"/>
+            <path class="flow" id="gan-p4" d="M338 86 Q380 86 398 138"/>
+            <path class="flow" id="gan-p5" d="M522 158 H556"/>
+            <path class="flow back" id="gan-pb" d="M460 196 V318 H170 V270"/>
+            <path class="ganl-pulse" id="gan-pulse" d="M460 196 V318 H170 V270"/>
+            <g class="ganl-b" data-k="z" tabindex="0" role="button" aria-label="Шум z: случайный вектор из нормального распределения">
+              <rect class="ganl-hit" x="14" y="196" width="72" height="104" rx="8"/>
+              <g class="d-c" opacity=".8"><circle cx="34" cy="216" r="2.5"/><circle cx="48" cy="232" r="2.5"/><circle cx="40" cy="248" r="2.5"/><circle cx="58" cy="210" r="2.5"/><circle cx="62" cy="242" r="2.5"/><circle cx="28" cy="236" r="2.5"/><circle cx="52" cy="258" r="2.5"/><circle cx="70" cy="226" r="2.5"/></g>
+              <text class="d-lbl" x="48" y="288" text-anchor="middle">z ~ 𝒩(0, I)</text>
+            </g>
+            <g class="ganl-b" data-k="g" tabindex="0" role="button" aria-label="Генератор G">
+              <rect class="d-fill ganl-box" x="110" y="196" width="120" height="72" rx="8"/>
+              <text class="d-txt" x="170" y="229" text-anchor="middle">G</text>
+              <text class="d-lbl" x="170" y="250" text-anchor="middle">генератор</text>
+            </g>
+            <g class="ganl-b" data-k="xf" tabindex="0" role="button" aria-label="Подделка x̃ = G(z)">
+              <rect class="d-fill ganl-box" x="276" y="202" width="60" height="60" rx="6"/>
+              <g class="d-c"><circle cx="294" cy="222" r="3.5"/><circle cx="308" cy="230" r="3.5"/><circle cx="320" cy="222" r="3.5"/><circle cx="300" cy="244" r="3.5"/></g>
+              <text class="d-sym" x="306" y="288" text-anchor="middle">x̃</text>
+              <text class="d-lbl" x="306" y="306" text-anchor="middle">подделка</text>
+            </g>
+            <g class="ganl-b" data-k="x" tabindex="0" role="button" aria-label="Реальные данные x">
+              <rect class="d-fill ganl-box" x="276" y="56" width="60" height="60" rx="6"/>
+              <g fill="var(--fg)" opacity=".7"><circle cx="292" cy="74" r="3.5"/><circle cx="306" cy="82" r="3.5"/><circle cx="320" cy="74" r="3.5"/><circle cx="296" cy="98" r="3.5"/><circle cx="312" cy="102" r="3.5"/><circle cx="322" cy="92" r="3.5"/></g>
+              <text class="d-sym" x="306" y="40" text-anchor="middle">x</text>
+              <text class="d-lbl" x="346" y="40">реальные данные</text>
+            </g>
+            <g class="ganl-b" data-k="d" tabindex="0" role="button" aria-label="Дискриминатор D">
+              <rect class="d-fill ganl-box" id="gan-dbox" x="400" y="122" width="120" height="72" rx="8"/>
+              <text class="d-txt" x="460" y="155" text-anchor="middle">D</text>
+              <text class="d-lbl" x="460" y="176" text-anchor="middle">дискриминатор</text>
+            </g>
+            <g class="ganl-b" data-k="v" tabindex="0" role="button" aria-label="Ответ дискриминатора D(x̃)">
+              <rect class="ganl-hit" x="550" y="104" width="84" height="80" rx="8"/>
+              <text class="d-lbl" x="592" y="124" text-anchor="middle">D(x̃)</text>
+              <text class="d-sym ganl-vd" id="gan-vd" x="592" y="152" text-anchor="middle">0.50</text>
+              <text class="d-lbl" x="592" y="172" text-anchor="middle">«реальное?»</text>
+            </g>
+            <g class="ganl-b" data-k="grad" tabindex="0" role="button" aria-label="Градиент от D обратно в G">
+              <rect class="ganl-hit" x="160" y="300" width="310" height="48" rx="8"/>
+              <text class="d-lbl" x="315" y="340" text-anchor="middle" style="fill:var(--gan)">градиент: как обмануть D</text>
+            </g>
+            <g id="gan-parts" aria-hidden="true"></g>
+          </svg>
+          <div class="ganl-exp" id="gan-exp">
+            <p class="ganl-hint mono" id="gan-hint-d"><svg viewBox="0 0 14 16" aria-hidden="true"><path d="M3 1.5v10.2l2.6-2.4 1.9 4.4 2-.9-1.9-4.3 3.5-.2z"/></svg>наведи на блок схемы или нажми на него</p>
+            <p class="ganl-line" id="gan-exp-line" aria-live="off"><b class="mono" id="gan-exp-k">G</b><span id="gan-exp-t">Генератор: превращает шум z в объект x̃ = G(z). Данных он не видит.</span></p>
+          </div>
+          <p class="cap ganl-cap1">Генератор ни разу не видит реальные данные. Он учится только по сигналу дискриминатора: насколько подделка похожа на настоящее.</p>
+
+          <div class="ganl-sim" id="gan-sim">
+            <div class="ganl-head">
+              <p class="mono ganl-title">Живая 1D-GAN: две моды данных</p>
+              <p class="mono ganl-it" id="gan-it">итерация <b>0</b></p>
+            </div>
+            <div class="ganl-stage">
+              <canvas id="gan-cv" role="img" aria-label="Обучение одномерной GAN: плотность данных с двумя модами, плотность генератора, ответ дискриминатора D(x) от 0 до 1 и текущие образцы"></canvas>
+            </div>
+            <div class="ganl-sparks">
+              <div class="ganl-spark">
+                <p class="mono ganl-sh">D на реальных <i class="ganl-sw r"></i> и на подделках <i class="ganl-sw f"></i></p>
+                <canvas id="gan-sp1" aria-hidden="true"></canvas>
+                <p class="ganl-read" id="gan-r1">x <b>0.50</b> · G(z) <b>0.50</b></p>
+              </div>
+              <div class="ganl-spark">
+                <p class="mono ganl-sh">Где G: центр колокола <span class="ganl-nt">μ</span></p>
+                <canvas id="gan-sp2" aria-hidden="true"></canvas>
+                <p class="ganl-read" id="gan-r2">μ <b>+0.25</b> · прыжков <b>0</b></p>
+              </div>
+            </div>
+            <div class="ganl-ctrl">
+              <button class="ganl-btn ganl-play" id="gan-play" type="button" aria-pressed="false"><svg class="i-play" viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z"/></svg><svg class="i-pause" viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.5h2.6v9H2.5zM6.9 1.5h2.6v9H6.9z"/></svg><span id="gan-play-l">Обучать</span></button>
+              <button class="ganl-btn" id="gan-step" type="button"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M1.5 1.5v9l6-4.5z"/><path d="M8.6 1.5h1.9v9H8.6z"/></svg>Шаг</button>
+              <button class="ganl-btn" id="gan-reset" type="button"><svg viewBox="0 0 12 12" aria-hidden="true" class="i-st"><path d="M2.2 6a3.8 3.8 0 1 0 1.1-2.7"/><path d="M2.6 1.2v2.4H5"/></svg>Сброс</button>
+              <div class="ganl-speed" role="group" aria-label="Скорость обучения на экране">
+                <span class="mono">скорость</span>
+                <button class="ganl-seg" id="gan-spd-1" type="button" data-v="1" aria-pressed="true">×1</button>
+                <button class="ganl-seg" id="gan-spd-3" type="button" data-v="3" aria-pressed="false">×3</button>
+                <button class="ganl-seg" id="gan-spd-10" type="button" data-v="10" aria-pressed="false">×10</button>
+              </div>
+              <button class="ganl-btn ganl-two" id="gan-two" type="button" aria-pressed="false"><i class="ganl-tg" aria-hidden="true"></i>G из двух колоколов</button>
+            </div>
+            <p class="ganl-hint mono" id="gan-hint-s"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z"/></svg><span id="gan-hint-st">нажми «Обучать», чтобы запустить, или смотри, как G прыгает между модами</span></p>
+          </div>
+          <figcaption class="cap ganl-cap2">Это настоящая маленькая GAN, она обучается прямо в браузере. Данные — смесь двух гауссиан. G — один узкий колокол <span class="ganl-m">x̃ = μ + s·z</span>: он сдвигает μ по градиенту <span class="ganl-m">𝔼[log D(G(z))]</span>, и градиент проходит сквозь случайность (репараметризация). D — логистическая регрессия на семи гладких «бугорках» (RBF). Ёмкости у неё мало, поэтому D видит мир размытым и учится с запаздыванием. Один колокол обе моды не накроет, но погоня та же, что в больших GAN. С двумя колоколами игра приходит к D около 0.5.</figcaption>
+        </figure>

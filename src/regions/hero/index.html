@@ -1,0 +1,75 @@
+  <section class="hero wrap" id="hero" aria-labelledby="h1">
+    <div class="hero-top">
+      <div>
+        <p class="eyebrow mono hx-in" style="--i:0">Сравнительный анализ · <span>VAE · GAN · Diffusion</span></p>
+        <h1 id="h1" aria-label="Три способа превратить шум в данные"><span class="hx-w" style="--i:0" aria-hidden="true">Три</span> <span class="hx-w" style="--i:1" aria-hidden="true">способа</span> <span class="hx-w" style="--i:2" aria-hidden="true">превратить</span> <span class="hx-w" style="--i:3" aria-hidden="true">шум</span> <span class="hx-w" style="--i:4" aria-hidden="true">в&nbsp;данные</span></h1>
+      </div>
+      <p class="lede hx-in" style="--i:5">Все три модели решают одну задачу: выдавать новые примеры, похожие на обучающие. Ниже они стартуют из одного и того же гауссова шума и рисуют спираль, <span class="ghost"><i></i>серую</span> — это настоящие данные. Разница в результате и есть тема семинара.</p>
+    </div>
+
+    <div class="hx-meta hx-in" style="--i:6">
+      <span class="mono hx-noise">x<sub>T</sub> ~ 𝒩(0, I) · 640 точек · один и тот же шум для всех трёх</span>
+      <span class="mono hx-hint" id="hero-hint"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.5" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="8" r="1.6" fill="currentColor"/><path d="M8 0v3M8 13v3M0 8h3M13 8h3" stroke="currentColor" stroke-width="1.2"/></svg><span class="hx-hint-t">наведи на точку — увидишь её путь из шума</span></span>
+    </div>
+
+    <div class="samplers">
+      <figure class="sampler hx-in" data-m="vae" style="--i:7">
+        <div class="s-head"><span class="s-name">VAE</span><span class="s-fn mono">x = Dec(z)</span></div>
+        <canvas data-canvas tabindex="0" role="img" aria-describedby="hero-hint" aria-label="VAE за один шаг попадает на спираль, но точки размыты вокруг неё"></canvas>
+        <dl class="s-stats" aria-live="off">
+          <div><dt>шагов</dt><dd data-st="n">0</dd></div>
+          <div><dt>покрытие</dt><dd><span data-st="cov">0%</span><i class="s-bar"><b data-bar="cov"></b></i></dd></div>
+          <div><dt>чёткость</dt><dd><span data-st="prec">0%</span><i class="s-bar"><b data-bar="prec"></b></i></dd></div>
+        </dl>
+        <figcaption class="s-verdict"><b>Один шаг, но размыто.</b> Форму ловит целиком, деталей нет.</figcaption>
+      </figure>
+      <figure class="sampler hx-in" data-m="gan" style="--i:8">
+        <div class="s-head"><span class="s-name">GAN</span><span class="s-fn mono">x = G(z)</span></div>
+        <canvas data-canvas tabindex="0" role="img" aria-describedby="hero-hint" aria-label="GAN за один шаг даёт чёткие точки, но покрывает только часть спирали"></canvas>
+        <dl class="s-stats" aria-live="off">
+          <div><dt>шагов</dt><dd data-st="n">0</dd></div>
+          <div><dt>покрытие</dt><dd><span data-st="cov">0%</span><i class="s-bar"><b data-bar="cov"></b></i></dd></div>
+          <div><dt>чёткость</dt><dd><span data-st="prec">0%</span><i class="s-bar"><b data-bar="prec"></b></i></dd></div>
+        </dl>
+        <figcaption class="s-verdict"><b>Один шаг, чётко.</b> Но покрыта только часть спирали: mode collapse.</figcaption>
+      </figure>
+      <figure class="sampler hx-in" data-m="dif" style="--i:9">
+        <div class="s-head"><span class="s-name">Diffusion</span><span class="s-fn mono">t = <b data-step>1000</b></span></div>
+        <canvas data-canvas tabindex="0" role="img" aria-describedby="hero-hint" aria-label="Диффузионная модель за много шагов убирает шум и точно покрывает всю спираль"></canvas>
+        <dl class="s-stats" aria-live="off">
+          <div><dt>шагов</dt><dd data-st="n">0</dd></div>
+          <div><dt>покрытие</dt><dd><span data-st="cov">0%</span><i class="s-bar"><b data-bar="cov"></b></i></dd></div>
+          <div><dt>чёткость</dt><dd><span data-st="prec">0%</span><i class="s-bar"><b data-bar="prec"></b></i></dd></div>
+        </dl>
+        <figcaption class="s-verdict"><b>Чётко и полностью.</b> Цена: десятки и сотни шагов денойзинга.</figcaption>
+      </figure>
+    </div>
+
+    <div class="hx-clock hx-in" style="--i:10">
+      <div class="clk-grid" id="hero-clock">
+        <div class="clk-row clk-phases" aria-hidden="true">
+          <span data-ph="0">шум</span><span data-ph="1">генерация</span><span data-ph="2">результат</span><span data-ph="3"><span class="lg">обратно в шум</span><span class="sh">в шум</span></span>
+        </div>
+        <div class="clk-row clk-track" aria-hidden="true">
+          <i data-seg="0"><b></b></i><i data-seg="1"><b></b></i><i data-seg="2"><b></b></i><i data-seg="3"><b></b></i>
+        </div>
+        <div class="clk-row clk-lane" data-lane="vae" aria-hidden="true"><span class="ln-l">VAE</span><span class="ln-bar"><i></i><b></b><span class="ln-n">1 шаг</span></span></div>
+        <div class="clk-row clk-lane" data-lane="gan" aria-hidden="true"><span class="ln-l">GAN</span><span class="ln-bar"><i></i><b></b><span class="ln-n">1 шаг</span></span></div>
+        <div class="clk-row clk-lane" data-lane="dif" aria-hidden="true"><span class="ln-l">Diffusion</span><span class="ln-bar"><i></i><b></b><span class="ln-n">50 шагов</span></span></div>
+        <span class="clk-head" aria-hidden="true"></span>
+        <label class="clk-sr" for="hero-scrub">Момент цикла генерации, секунды</label>
+        <input class="clk-input" id="hero-scrub" type="range" min="0" max="16.1" step="0.1" value="0">
+      </div>
+      <div class="clk-side">
+        <span class="clk-time mono" aria-hidden="true"><b data-clk-t>00.0</b> / <span data-clk-total>16.1</span> с</span>
+        <button class="clk-play" id="hero-play" type="button" aria-label="Пауза">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><g class="i-pause"><rect x="4" y="3" width="2.6" height="10" rx=".6"/><rect x="9.4" y="3" width="2.6" height="10" rx=".6"/></g><path class="i-play" d="M5 3.2v9.6a.6.6 0 0 0 .9.5l7.6-4.8a.6.6 0 0 0 0-1L5.9 2.7a.6.6 0 0 0-.9.5z"/></svg>
+        </button>
+        <span class="mono hx-hint clk-hint"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 8h14M4 5 1 8l3 3M12 5l3 3-3 3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>потяни шкалу</span>
+        <button class="resample" id="resample" type="button">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M13.5 8a5.5 5.5 0 1 1-1.6-3.9"/><path d="M12.5 1.5v3h-3"/></svg>
+          Новый шум
+        </button>
+      </div>
+    </div>
+  </section>

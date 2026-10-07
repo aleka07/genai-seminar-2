@@ -1,0 +1,126 @@
+  <!-- ============ Trilemma + table ============ -->
+  <section class="sec wrap" id="tri" aria-labelledby="h-tri">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow mono">Сравнение</p>
+        <h2 id="h-tri">Трилемма: выбери два из&nbsp;трёх</h2>
+      </div>
+      <p class="intro">Xiao, Kreis и Vahdat называют это трилеммой генеративного обучения<a class="cite" href="#ref-7">[7]</a>. От модели хотят три вещи: <b>качество</b> образцов, <b>разнообразие</b> (покрытие всех мод данных) и <b>быструю</b> генерацию. Каждое классическое семейство закрывает только две.</p>
+    </div>
+
+    <div class="tri" id="tri-box">
+      <div class="tri-top">
+        <p class="tri-hint mono" id="tri-hint">
+          <svg class="tri-glyph" viewBox="0 0 14 14" aria-hidden="true"><path class="g-hover" d="M3 1.5v10l2.6-2.4 1.7 3.9 1.7-.8-1.7-3.8H11z"/><g class="g-tap"><circle cx="7" cy="7" r="2.4"/><circle cx="7" cy="7" r="5.6" fill="none"/></g></svg>
+          <span><span class="v-hov">наведи</span><span class="v-tap">нажми</span> на сторону треугольника или на модель <span class="w-side">справа</span><span class="w-below">ниже</span></span>
+        </p>
+        <p class="tri-status mono" id="tri-status" aria-hidden="true"><svg viewBox="0 0 12 12"><circle class="st-ring" cx="6" cy="6" r="4.5"/><path class="st-play" d="M4.6 3.6v4.8L8.4 6z"/><path class="st-pause" d="M4 3.5h1.4v5H4zM6.6 3.5H8v5H6.6z"/></svg><span id="tri-status-t">автопоказ</span></p>
+      </div>
+
+      <div class="tri-fig" id="tri-fig">
+        <svg class="tri-svg" viewBox="0 0 560 580" role="img" aria-label="Треугольник: вершины качество, разнообразие, скорость. Сторона качество–разнообразие у диффузии, качество–скорость у GAN, разнообразие–скорость у VAE. У каждой стороны — типичный выход модели на Swiss roll. В центре — гибриды.">
+          <defs><filter id="tri-blur" filterUnits="userSpaceOnUse" x="-40" y="-40" width="640" height="660"><feGaussianBlur stdDeviation="5"/></filter></defs>
+          <!-- model edges: hit area, glow, edge, thumbnail frame + caption -->
+          <g class="t-m m-dif" data-m="dif">
+            <line class="t-hit" x1="280" y1="58" x2="70" y2="410"/>
+            <line class="t-glow" x1="280" y1="58" x2="70" y2="410"/>
+            <line class="t-edge" x1="280" y1="58" x2="70" y2="410" pathLength="1"/>
+            <rect class="t-box" x="33" y="127" width="112" height="112"/>
+            <text class="t-mlbl" x="89" y="259" text-anchor="middle">DIFFUSION</text>
+            <text class="t-msub" x="89" y="275" text-anchor="middle">чётко, весь ролл</text>
+          </g>
+          <g class="t-m m-gan" data-m="gan">
+            <line class="t-hit" x1="280" y1="58" x2="490" y2="410"/>
+            <line class="t-glow" x1="280" y1="58" x2="490" y2="410"/>
+            <line class="t-edge" x1="280" y1="58" x2="490" y2="410" pathLength="1"/>
+            <rect class="t-box" x="415" y="127" width="112" height="112"/>
+            <text class="t-mlbl" x="471" y="259" text-anchor="middle">GAN</text>
+            <text class="t-msub" x="471" y="275" text-anchor="middle">чётко, 2–3 дуги</text>
+          </g>
+          <g class="t-m m-vae" data-m="vae">
+            <line class="t-hit" x1="70" y1="410" x2="490" y2="410"/>
+            <line class="t-glow" x1="70" y1="410" x2="490" y2="410"/>
+            <line class="t-edge" x1="70" y1="410" x2="490" y2="410" pathLength="1"/>
+            <rect class="t-box" x="224" y="426" width="112" height="112"/>
+            <text class="t-mlbl" x="280" y="557" text-anchor="middle">VAE</text>
+            <text class="t-msub" x="280" y="573" text-anchor="middle">весь ролл, размыто</text>
+          </g>
+
+          <!-- hybrids: arrows from each edge toward the centre -->
+          <g class="t-hyb" aria-hidden="true">
+            <g class="h-arrows">
+              <g class="m-dif"><line x1="161" y1="222" x2="191" y2="240" pathLength="1"/><path d="M197 243.6L188.9 243.4 193.1 236.6z"/></g>
+              <g class="m-gan"><line x1="399" y1="222" x2="369" y2="240" pathLength="1"/><path d="M363 243.6L371.1 243.4 366.9 236.6z"/></g>
+              <g class="m-vae"><line x1="280" y1="425" x2="280" y2="397" pathLength="1"/><path d="M280 390l4 7h-8z"/></g>
+            </g>
+            <circle class="h-disc" cx="280" cy="296" r="50"/>
+            <g class="h-rest">
+              <text x="280" y="284" text-anchor="middle">гибриды</text>
+              <text x="280" y="300" text-anchor="middle">стремятся</text>
+              <text x="280" y="316" text-anchor="middle">сюда</text>
+              <path class="h-plus" d="M276 329h8M280 325v8"/>
+            </g>
+            <g class="h-names">
+              <text x="280" y="258" text-anchor="middle">Denoising</text>
+              <text x="280" y="275" text-anchor="middle">Diffusion GAN</text>
+              <text x="280" y="302" text-anchor="middle">consistency models</text>
+              <text x="280" y="329" text-anchor="middle">latent diffusion</text>
+              <text class="h-note" x="280" y="353" text-anchor="middle">качественно</text>
+            </g>
+          </g>
+
+          <!-- vertices: what each pair of edges meets at; tag = who sacrifices it -->
+          <g class="t-v v-q">
+            <circle class="v-dot" cx="280" cy="58" r="7"/>
+            <text class="t-name v-dim" x="280" y="26" text-anchor="middle">Качество</text>
+            <text class="t-sub" x="280" y="44" text-anchor="middle">чёткие, реалистичные образцы</text>
+            <text class="v-tag m-vae" x="280" y="45" text-anchor="middle">жертвует: качеством</text>
+          </g>
+          <g class="t-v v-d">
+            <circle class="v-dot" cx="70" cy="410" r="7"/>
+            <text class="t-name v-dim" x="40" y="458">Разнообразие</text>
+            <text class="v-tag m-gan" x="40" y="480">жертвует:<tspan x="40" dy="1.35em">разнообразием</tspan></text>
+          </g>
+          <g class="t-v v-s">
+            <circle class="v-dot" cx="490" cy="410" r="7"/>
+            <text class="t-name v-dim" x="520" y="458" text-anchor="end">Скорость</text>
+            <text class="v-tag m-dif" x="520" y="480" text-anchor="end">жертвует:<tspan x="520" dy="1.35em">скоростью</tspan></text>
+          </g>
+        </svg>
+        <canvas class="tri-cv" id="tri-cv" aria-hidden="true"></canvas>
+        <button type="button" class="tri-hub" id="tri-hub" aria-expanded="false" aria-describedby="tri-note"><span class="sr">Гибриды в центре треугольника: показать названия</span></button>
+      </div>
+
+      <div class="tri-side">
+        <ul class="tri-legend" id="tri-legend">
+          <li class="m-dif"><button type="button" id="tri-m-dif" data-m="dif" aria-pressed="false"><span class="ti-dot"></span><span class="ti-main"><b>Diffusion: качество + разнообразие</b><span class="w">Платит скоростью: десятки и сотни прогонов сети на один образец.</span></span><span class="ti-pin mono"><span class="pin-on">закреплено</span><span class="pin-off">закрепить</span></span><span class="ti-prog" aria-hidden="true"></span></button></li>
+          <li class="m-gan"><button type="button" id="tri-m-gan" data-m="gan" aria-pressed="false"><span class="ti-dot"></span><span class="ti-main"><b>GAN: качество + скорость</b><span class="w">Платит разнообразием: mode collapse, часть данных генератор не воспроизводит.</span></span><span class="ti-pin mono"><span class="pin-on">закреплено</span><span class="pin-off">закрепить</span></span><span class="ti-prog" aria-hidden="true"></span></button></li>
+          <li class="m-vae"><button type="button" id="tri-m-vae" data-m="vae" aria-pressed="false"><span class="ti-dot"></span><span class="ti-main"><b>VAE: разнообразие + скорость</b><span class="w">Платит качеством: образцы покрывают данные, но размыты.</span></span><span class="ti-pin mono"><span class="pin-on">закреплено</span><span class="pin-off">закрепить</span></span><span class="ti-prog" aria-hidden="true"></span></button></li>
+        </ul>
+        <p class="tri-note" id="tri-note">Современные системы — гибриды: latent diffusion<a class="cite" href="#ref-6">[6]</a>, Denoising Diffusion GAN<a class="cite" href="#ref-7">[7]</a>, consistency models<a class="cite" href="#ref-15">[15]</a>. Каждая пытается сдвинуться к центру треугольника. Центр и стрелки здесь качественные: это схема компромисса, а не измерение.</p>
+      </div>
+    </div>
+
+    <p class="cmp-hint mono" id="cmp-hint" aria-hidden="true"><span>←</span> листай таблицу <span>→</span></p>
+    <div class="cmp-wrap" id="cmp-wrap" role="region" aria-label="Таблица сравнения" tabindex="0">
+      <table class="cmp" id="cmp">
+        <thead>
+          <tr><th scope="col"><span class="mono" style="color:var(--muted);font-weight:400">Критерий</span></th>
+            <th scope="col" class="m-vae"><span><i class="dot"></i>VAE</span></th>
+            <th scope="col" class="m-gan"><span><i class="dot"></i>GAN</span></th>
+            <th scope="col" class="m-dif"><span><i class="dot"></i>Diffusion</span></th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row">Принцип</th><td>Кодировать в вероятностный латент и декодировать</td><td>Игра генератора и дискриминатора</td><td>Постепенно убирать шум</td></tr>
+          <tr><th scope="row">Что оптимизирует</th><td>ELBO: реконструкция − KL</td><td>Минимакс; в теории — JS-дивергенция</td><td>MSE предсказания шума (вариационная граница)</td></tr>
+          <tr><th scope="row">Качество</th><td class="m-vae"><span class="meter" aria-label="1 из 3"><i class="on"></i><i></i><i></i></span><span class="sm">размыто</span></td><td class="m-gan"><span class="meter" aria-label="3 из 3"><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="sm">очень чётко</span></td><td class="m-dif"><span class="meter" aria-label="3 из 3"><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="sm">лучшее на 2021+</span></td></tr>
+          <tr><th scope="row">Разнообразие</th><td class="m-vae"><span class="meter" aria-label="3 из 3"><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="sm">покрывает всё</span></td><td class="m-gan"><span class="meter" aria-label="1 из 3"><i class="on"></i><i></i><i></i></span><span class="sm">mode collapse</span></td><td class="m-dif"><span class="meter" aria-label="3 из 3"><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="sm">покрывает всё</span></td></tr>
+          <tr><th scope="row">Скорость генерации</th><td class="m-vae"><span class="meter" aria-label="3 из 3"><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="sm">1 проход</span></td><td class="m-gan"><span class="meter" aria-label="3 из 3"><i class="on"></i><i class="on"></i><i class="on"></i></span><span class="sm">1 проход</span></td><td class="m-dif"><span class="meter" aria-label="1 из 3"><i class="on"></i><i></i><i></i></span><span class="sm">25–1000 проходов</span></td></tr>
+          <tr><th scope="row">Стабильность обучения</th><td>Высокая</td><td>Низкая: колебания, затухающие градиенты</td><td>Высокая</td></tr>
+          <tr><th scope="row">Латентное пространство</th><td>Сжатое и осмысленное, есть энкодер</td><td>Есть z, но нет энкодера x → z</td><td>Размерность как у данных, сжатия нет</td></tr>
+          <tr><th scope="row">Правдоподобие</th><td>Нижняя граница (ELBO)</td><td>Нет</td><td>Граница, можно оценить</td></tr>
+          <tr><th scope="row">Где применяют</th><td>Представления, поиск аномалий, сжатие; автоэнкодер в Stable Diffusion</td><td>Лица, апскейл (ESRGAN), image-to-image, реальное время</td><td>Text-to-image, видео, аудио, inpainting</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>

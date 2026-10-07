@@ -1,0 +1,54 @@
+  <!-- ============ Decisions ============ -->
+  <section class="sec wrap" id="pick" aria-labelledby="h-pick">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow mono">Практика</p>
+        <h2 id="h-pick">Что выбрать под задачу</h2>
+      </div>
+      <p class="intro">Универсального победителя нет. Выбор зависит от того, чем можно пожертвовать: временем генерации, разнообразием или чёткостью.</p>
+    </div>
+
+    <div class="pk" id="pick-chooser" data-trilemma="false">
+      <div class="pk-ctl">
+        <p class="pk-hint mono"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="2.6" fill="currentColor"/><circle cx="8" cy="8" r="6.2" fill="none" stroke="currentColor" stroke-width="1.2" class="pk-ring"/></svg>выбери, что важно в твоей задаче</p>
+        <div class="pk-reqs" role="group" aria-label="Требования задачи">
+          <button type="button" class="pk-req" id="pick-req-rt" data-r="rt" aria-pressed="false"><span class="pk-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.5 6.3 5 8.7 9.6 3.4"/></svg></span>Реальное время</button>
+          <button type="button" class="pk-req" id="pick-req-sharp" data-r="sharp" aria-pressed="false"><span class="pk-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.5 6.3 5 8.7 9.6 3.4"/></svg></span>Максимум чёткости</button>
+          <button type="button" class="pk-req" id="pick-req-rare" data-r="rare" aria-pressed="false"><span class="pk-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.5 6.3 5 8.7 9.6 3.4"/></svg></span>Важны редкие случаи</button>
+          <button type="button" class="pk-req" id="pick-req-lat" data-r="lat" aria-pressed="false"><span class="pk-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.5 6.3 5 8.7 9.6 3.4"/></svg></span>Нужен латентный вектор</button>
+          <button type="button" class="pk-req" id="pick-req-cheap" data-r="cheap" aria-pressed="false"><span class="pk-box" aria-hidden="true"><svg viewBox="0 0 12 12"><path d="M2.5 6.3 5 8.7 9.6 3.4"/></svg></span>Мало вычислений на обучение</button>
+        </div>
+        <p class="pk-demo mono" id="pick-demo"><span class="pk-demo-k" id="pick-demo-k">пример</span><span class="pk-demo-t" id="pick-demo-t">картинка по тексту</span><span class="pk-prog" aria-hidden="true"><i id="pick-prog"></i></span></p>
+      </div>
+
+      <div class="pk-out">
+        <div class="pk-bars" role="img" aria-label="Баллы моделей" id="pick-bars">
+          <div class="pk-bar m-vae" data-m="vae"><span class="pk-name"><span class="dot"></span>VAE</span><span class="pk-track"></span><span class="pk-sc mono"><b>0</b><span class="pk-of"> / 0</span></span></div>
+          <div class="pk-bar m-gan" data-m="gan"><span class="pk-name"><span class="dot"></span>GAN</span><span class="pk-track"></span><span class="pk-sc mono"><b>0</b><span class="pk-of"> / 0</span></span></div>
+          <div class="pk-bar m-dif" data-m="dif"><span class="pk-name"><span class="dot"></span>Diffusion</span><span class="pk-track"></span><span class="pk-sc mono"><b>0</b><span class="pk-of"> / 0</span></span></div>
+        </div>
+        <p class="pk-verdict" id="pick-verdict" aria-live="polite"></p>
+        <button type="button" class="pk-how mono" id="pick-how" aria-expanded="false" aria-controls="pick-table"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5"/></svg>как считается?</button>
+      </div>
+
+      <div class="pk-table" id="pick-table" role="region" aria-labelledby="pick-how">
+        <div class="pk-table-in">
+          <table class="pk-tbl">
+            <thead><tr><th scope="col">Требование</th><th scope="col"><span class="m-vae"><span class="dot"></span>VAE</span></th><th scope="col"><span class="m-gan"><span class="dot"></span>GAN</span></th><th scope="col"><span class="m-dif"><span class="dot"></span>Diffusion</span></th></tr></thead>
+            <tbody id="pick-tbody"></tbody>
+          </table>
+          <p class="pk-rule">Балл модели — сумма очков по отмеченным строкам: <b>2</b> — сильная сторона, <b>1</b> — с оговорками, <b>0</b> — слабое место. Максимум — 2 очка на каждое требование. Это упрощение для семинара, а не бенчмарк.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="pk-listcap mono" id="pick-listcap">Типичные задачи <span><i class="pk-sep">· </i>подсвечены совпадающие с выбором</span></p>
+    <ul class="dec" id="pick-list">
+      <li data-r="sharp rare"><span class="task">Картинка по текстовому описанию, максимум качества</span><span class="chips"><span class="chip m-dif"><span class="dot"></span>Latent diffusion</span></span><p class="why">Лучшее качество и разнообразие, текстом удобно управлять через guidance. Латент VAE делает генерацию в разы дешевле.</p></li>
+      <li data-r="rt"><span class="task">Генерация в реальном времени: фильтры, игры, телефон</span><span class="chips"><span class="chip m-gan"><span class="dot"></span>GAN</span><span class="chip m-dif"><span class="dot"></span>дистилл. диффузия</span></span><p class="why">Нужен один прогон сети. Сотни шагов не укладываются в 30 кадров в секунду.</p></li>
+      <li data-r="lat"><span class="task">Сжатое представление, поиск аномалий, интерполяция</span><span class="chips"><span class="chip m-vae"><span class="dot"></span>VAE</span></span><p class="why">Энкодер даёт осмысленный латентный вектор, ELBO — оценку правдоподобия: у аномалий она низкая.</p></li>
+      <li data-r="sharp"><span class="task">Апскейл, перенос стиля, image-to-image</span><span class="chips"><span class="chip m-gan"><span class="dot"></span>GAN</span><span class="chip m-dif"><span class="dot"></span>Diffusion</span></span><p class="why">Здесь вход сильно ограничивает выход, и mode collapse почти не мешает. ESRGAN, pix2pix и CycleGAN до сих пор в ходу.</p></li>
+      <li data-r="rare"><span class="task">Медицина и наука, где важны редкие случаи</span><span class="chips"><span class="chip m-dif"><span class="dot"></span>Diffusion</span><span class="chip m-vae"><span class="dot"></span>VAE</span></span><p class="why">GAN склонен выбрасывать редкие моды, то есть ровно те примеры, ради которых всё затевалось.</p></li>
+      <li data-r="cheap"><span class="task">Синтетические табличные данные</span><span class="chips"><span class="chip m-gan"><span class="dot"></span>CTGAN</span><span class="chip m-vae"><span class="dot"></span>TVAE</span></span><p class="why">Обе модели предложены в одной статье<a class="cite" href="#ref-10">[10]</a>. Подходят для небольших датасетов и анонимизации.</p></li>
+    </ul>
+  </section>

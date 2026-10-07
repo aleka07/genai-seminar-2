@@ -1,0 +1,100 @@
+  <!-- ============ Conclusions ============ -->
+  <section class="sec wrap" id="end" aria-labelledby="h-end">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow mono">Выводы</p>
+        <h2 id="h-end">Модели не конкурируют, а собираются вместе</h2>
+      </div>
+    </div>
+    <div class="sd en-sd" id="end-sd">
+      <div class="big" aria-label="в 48 раз"><small aria-hidden="true">×</small><span class="en-num" id="end-num" aria-hidden="true">48</span></div>
+      <div class="en-txt">
+        <h3>Во столько раз Stable Diffusion сжимает картинку перед диффузией</h3>
+        <p>512 × 512 × 3 = 786 432 числа превращаются в латент 64 × 64 × 4 = 16 384 числа. Внутри одной системы работают все три идеи:<a class="cite" href="#ref-6">[6]</a></p>
+      </div>
+      <figure class="en-fig">
+        <svg id="end-svg" viewBox="0 0 640 312" role="img" aria-labelledby="end-svg-t">
+          <title id="end-svg-t">Сжатие в масштабе: картинка 512 на 512 на 3 канала превращается энкодером VAE в латент 64 на 64 на 4. Сторона короче в 8 раз.</title>
+          <g class="en-img">
+            <rect class="en-ch" x="58" y="18" width="200" height="200"/>
+            <rect class="en-ch" x="44" y="32" width="200" height="200"/>
+            <rect class="en-ch en-front" x="30" y="46" width="200" height="200"/>
+            <g class="en-grid" id="end-grid"></g>
+            <path class="en-roll" id="end-roll" d=""/>
+            <text class="en-chl" x="64" y="29">R</text>
+            <text class="en-chl" x="50" y="43">G</text>
+            <text class="en-chl" x="36" y="59">B</text>
+          </g>
+
+          <g class="en-p en-p-vae m-vae" data-part="vae">
+            <line class="en-flow" x1="276" y1="132" x2="440" y2="132"/>
+            <path class="en-head" d="M436 125 L448 132 L436 139"/>
+            <text class="en-lbl" x="362" y="117" text-anchor="middle">энкодер VAE</text>
+            <text class="en-lbl en-kl" x="470" y="182">KL → 𝒩(0, I)</text>
+          </g>
+          <g class="en-p en-p-gan m-gan" data-part="gan">
+            <path class="en-flow en-back" d="M462 156 C 430 214, 314 226, 266 200"/>
+            <path class="en-head" d="M276 197 L264 199 L271 189"/>
+            <text class="en-lbl" x="372" y="240" text-anchor="middle">декодер + D</text>
+          </g>
+          <g class="en-p en-p-dif m-dif" data-part="dif">
+            <path class="en-flow en-loop" d="M466 104 A 28 28 0 1 1 520 112"/>
+            <path class="en-head" d="M522 101 L520 113 L511 106"/>
+            <text class="en-lbl" x="492" y="62" text-anchor="middle">диффузия · T шагов</text>
+          </g>
+
+          <g class="en-lat" id="end-lat">
+            <rect class="en-lc" x="488" y="110" width="25" height="25"/>
+            <rect class="en-lc" x="482" y="116" width="25" height="25"/>
+            <rect class="en-lc" x="476" y="122" width="25" height="25"/>
+            <rect class="en-lc en-front" x="470" y="128" width="25" height="25"/>
+            <g class="en-noise" id="end-noise"></g>
+          </g>
+
+          <text class="en-dim" x="30" y="276">512 × 512 × 3 =</text>
+          <text class="en-n" id="end-inum" x="30" y="302">786 432</text>
+          <text class="en-n en-arr" x="362" y="302" text-anchor="middle">→</text>
+          <text class="en-dim" id="end-ldim" x="470" y="276">64 × 64 × 4 =</text>
+          <text class="en-n" id="end-lnum" x="470" y="302">16 384</text>
+        </svg>
+        <figcaption>В масштабе: сторона латента в 8 раз короче, ровно одна клетка сетки на картинке. Каналов 4 вместо 3, поэтому 8 · 8 · 3 / 4 = 48.</figcaption>
+      </figure>
+      <div class="en-ideas">
+        <p class="en-hint mono"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 2.5v8.2l2.2-1.9 1.5 3.6 1.7-.7-1.5-3.5H12L5 2.5Z" fill="currentColor"/></svg><span class="en-hint-h">наведи на идею — она подсветится на схеме</span><span class="en-hint-t">нажми на идею — она подсветится на схеме</span></p>
+        <ul class="sd-parts en-parts">
+          <li class="m-vae"><button type="button" class="en-part" id="end-part-vae" data-part="vae" aria-pressed="false"><span class="dot"></span><span><b>Автоэнкодер с KL-регуляризацией</b> сжимает изображение. Это идея VAE.</span></button></li>
+          <li class="m-gan"><button type="button" class="en-part" id="end-part-gan" data-part="gan" aria-pressed="false"><span class="dot"></span><span><b>Adversarial-лосс</b> при обучении автоэнкодера убирает размытость. Это идея GAN.</span></button></li>
+          <li class="m-dif"><button type="button" class="en-part" id="end-part-dif" data-part="dif" aria-pressed="false"><span class="dot"></span><span><b>Диффузия</b> генерирует в сжатом латенте, поэтому шаги дешёвые.</span></button></li>
+        </ul>
+      </div>
+    </div>
+    <div class="cols">
+      <div>
+        <h3>Итоги</h3>
+        <ol class="concl" id="end-concl">
+          <li>VAE, GAN и диффузия приближают одно и то же распределение данных, но разными путями: сжатием, игрой и пошаговым удалением шума.</li>
+          <li>Каждое семейство сильно в двух свойствах из трёх. VAE быстрый и полный, но размытый; GAN быстрый и чёткий, но теряет моды; диффузия чёткая и полная, но медленная.</li>
+          <li>С 2021 года диффузия лидирует по качеству изображений, а скорость ей возвращают латентное пространство, DDIM и дистилляция.</li>
+          <li>Сильные системы — гибриды. Понимать все три подхода нужно, чтобы видеть, из каких частей они собраны и где у них слабое место.</li>
+        </ol>
+      </div>
+      <div>
+        <h3>Вопросы для обсуждения</h3>
+        <p class="en-hint mono en-qhint"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>нажми на вопрос — ответ</p>
+        <ul class="qs en-qs">
+          <li>
+            <button type="button" class="en-q" id="end-q1" aria-expanded="false" aria-controls="end-a1"><span class="en-pm" aria-hidden="true"></span><span>Почему VAE даёт размытые картинки, а GAN — нет, хотя обе модели генерируют за один проход?</span></button>
+            <div class="en-a" id="end-a1" role="region" aria-labelledby="end-q1"><div class="en-a-in"><p>Декодер VAE обучают с гауссовым правдоподобием по пикселям, а это по сути MSE. Если одному z соответствуют несколько правдоподобных картинок, минимум MSE достигается на их среднем, а среднее нескольких чётких картинок размыто. Попиксельной ошибки у GAN нет: дискриминатор штрафует всё, что не похоже на настоящие данные, в том числе размытость, поэтому генератору выгодно выдавать чёткие образцы, пусть и не все варианты.</p></div></div>
+          </li>
+          <li>
+            <button type="button" class="en-q" id="end-q2" aria-expanded="false" aria-controls="end-a2"><span class="en-pm" aria-hidden="true"></span><span>Как обнаружить mode collapse, если смотреть только на отдельные образцы?</span></button>
+            <div class="en-a" id="end-a2" role="region" aria-labelledby="end-q2"><div class="en-a-in"><p>По одному образцу никак: каждый может быть отличным. Смотрят на много образцов сразу. В сетке из сотни картинок видны почти-дубликаты. Классификатор размечает сгенерированные и реальные данные, и гистограммы классов расходятся: редкие классы пропадают. Precision и recall для генеративных моделей разделяют качество и покрытие: при mode collapse precision высокая, а recall (coverage) низкий.<a class="cite" href="#ref-17">[17]</a> FID тоже растёт, потому что сравнивает статистики распределений, а не отдельные картинки.</p></div></div>
+          </li>
+          <li>
+            <button type="button" class="en-q" id="end-q3" aria-expanded="false" aria-controls="end-a3"><span class="en-pm" aria-hidden="true"></span><span>Можно ли считать диффузию «очень глубоким VAE» с фиксированным энкодером?</span></button>
+            <div class="en-a" id="end-a3" role="region" aria-labelledby="end-q3"><div class="en-a-in"><p>Да. Диффузия — иерархический VAE с T слоями латентов, у которого энкодер не обучается: он просто добавляет шум по фиксированному расписанию. Латенты x<sub>1</sub>…x<sub>T</sub> той же размерности, что и данные, а лосс выводится из той же нижней оценки ELBO; простой лосс DDPM — её перевзвешенный вариант.<a class="cite" href="#ref-5">[5]</a> Подробно эту связь разбирают Kingma и соавторы в статье Variational Diffusion Models (2021).<a class="cite" href="#ref-12">[12]</a></p></div></div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>

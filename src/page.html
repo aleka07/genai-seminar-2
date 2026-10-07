@@ -1,0 +1,97 @@
+{{chrome}}
+
+<main>
+{{hero}}
+
+  <!-- ============ Mechanism ============ -->
+  <section class="sec wrap" id="mech" aria-labelledby="h-mech">
+    <div class="sec-head">
+      <div>
+        <p class="eyebrow mono">Устройство</p>
+        <h2 id="h-mech">Как каждая модель учится генерировать</h2>
+      </div>
+      <p class="intro">Цель у всех одна: приблизить распределение данных <span class="mono" style="text-transform:none;letter-spacing:0">p(x)</span>. Различается путь. <b>VAE</b> сжимает и восстанавливает, <b>GAN</b> устраивает соревнование двух сетей, <b>диффузия</b> учится убирать шум по шагам.</p>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Модель">
+      <button class="tab m-vae" role="tab" id="tab-vae" aria-controls="pan-vae" aria-selected="true" data-m="vae" type="button"><span class="dot"></span>VAE <span class="ty">2013</span></button>
+      <button class="tab m-gan" role="tab" id="tab-gan" aria-controls="pan-gan" aria-selected="false" data-m="gan" type="button" tabindex="-1"><span class="dot"></span>GAN <span class="ty">2014</span></button>
+      <button class="tab m-dif" role="tab" id="tab-dif" aria-controls="pan-dif" aria-selected="false" data-m="dif" type="button" tabindex="-1"><span class="dot"></span>Diffusion <span class="ty">2015 · 2020</span></button>
+    </div>
+
+    <div class="stage">
+      <!-- VAE -->
+      <div class="panel m-vae" role="tabpanel" id="pan-vae" aria-labelledby="tab-vae">
+{{vae}}
+        <div class="notes">
+          <div class="note"><span class="mono">Идея</span><p>Сжать объект в короткий вектор z и восстановить обратно. В отличие от обычного автоэнкодера, латентное пространство приучают быть похожим на стандартное нормальное распределение, поэтому из него можно брать новые точки.<a class="cite" href="#ref-3">[3]</a></p></div>
+          <div class="note"><span class="mono">Обучение</span><div><div class="formula">ℒ = 𝔼<sub>q</sub>[log p<sub>θ</sub>(x|z)] <span class="c">− KL(q<sub>φ</sub>(z|x) ‖ p(z))</span></div><p>Первое слагаемое требует точной реконструкции, второе держит латентное пространство ровным. Трюк репараметризации <span class="mono" style="text-transform:none;letter-spacing:0">z = μ + σ⊙ε</span> позволяет считать градиент сквозь случайность.</p></div></div>
+          <div class="note"><span class="mono">Итог</span><div><p><span class="plus">+</span>Стабильное обучение, генерация за один проход, осмысленное латентное пространство: точки между двумя z дают плавный переход.</p><p><span class="minus">−</span>Размытые образцы. Гауссов декодер штрафует ошибку как MSE, и модель выгоднее «усреднить» несколько вариантов, чем рискнуть одним чётким.</p></div></div>
+        </div>
+      </div>
+
+      <!-- GAN -->
+      <div class="panel m-gan" role="tabpanel" id="pan-gan" aria-labelledby="tab-gan" hidden>
+{{gan}}
+        <div class="notes">
+          <div class="note"><span class="mono">Идея</span><p>Две сети играют друг против друга. Генератор G превращает шум в объект, дискриминатор D пытается отличить подделку от реального примера. Чем лучше D ловит подделки, тем точнее G учится их делать.<a class="cite" href="#ref-4">[4]</a></p></div>
+          <div class="note"><span class="mono">Обучение</span><div><div class="formula">min<sub>G</sub> max<sub>D</sub> 𝔼<sub>x</sub>[log D(x)] + 𝔼<sub>z</sub>[log(1 − D(<span class="c">G(z)</span>))]</div><p>Это минимакс-игра. В идеальном равновесии распределение генератора совпадает с распределением данных, а D отвечает 0.5 на всё. На практике сети обучают по очереди, и равновесие легко теряется.</p></div></div>
+          <div class="note"><span class="mono">Итог</span><div><p><span class="plus">+</span>Самые чёткие образцы среди классических подходов и генерация за один проход: StyleGAN делает фотореалистичные лица в реальном времени.<a class="cite" href="#ref-9">[9]</a></p><p><span class="minus">−</span>Нестабильное обучение и mode collapse: генератор находит несколько «удачных» образцов и выдаёт только их. Явной оценки правдоподобия нет.</p></div></div>
+        </div>
+      </div>
+
+      <!-- Diffusion -->
+      <div class="panel m-dif" role="tabpanel" id="pan-dif" aria-labelledby="tab-dif" hidden>
+{{dif}}
+        <div class="notes">
+          <div class="note"><span class="mono">Идея</span><p>Прямой процесс за T = 1000 шагов подмешивает к данным гауссов шум, пока от них ничего не останется. Нейросеть учится обратному: на каждом шаге угадать, какой шум был добавлен, и вычесть его. Генерация начинается с чистого шума.<a class="cite" href="#ref-5">[5]</a></p></div>
+          <div class="note"><span class="mono">Обучение</span><div><div class="formula">x<sub>t</sub> = a<sub>t</sub>·x<sub>0</sub> + b<sub>t</sub>·ε,&nbsp; a<sub>t</sub>² + b<sub>t</sub>² = 1</div><div class="formula">L = 𝔼 ‖ε − <span class="c">ε<sub>θ</sub>(x<sub>t</sub>, t)</span>‖²</div><p>Берём пример, случайный шаг t, зашумляем и просим сеть предсказать шум. Это обычная регрессия с MSE, поэтому обучение стабильное, без игры двух сетей.</p></div></div>
+          <div class="note"><span class="mono">Итог</span><div><p><span class="plus">+</span>Высокое качество и полное покрытие данных, удобно управлять генерацией через текст (classifier-free guidance).</p><p><span class="minus">−</span>Медленно: сеть прогоняется на каждом шаге. Лечится сэмплерами вроде DDIM (около 50 шагов)<a class="cite" href="#ref-14">[14]</a>, работой в сжатом латенте (Stable Diffusion) и дистилляцией до 1–4 шагов<a class="cite" href="#ref-15">[15]</a>.<a class="cite" href="#ref-6">[6]</a></p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{{tri}}
+
+{{time}}
+
+{{pick}}
+
+{{end}}
+
+  <!-- ============ References ============ -->
+  <section class="sec wrap" id="refs" aria-labelledby="h-refs">
+    <div class="sec-head"><div><p class="eyebrow mono">Источники</p><h2 id="h-refs">Литература</h2></div></div>
+    <ol class="refs">
+      <li id="ref-1"><span>Goodfellow I., Bengio Y., Courville A. <i>Deep Learning.</i> Cambridge, MA: MIT Press, 2016. Гл. 20.</span></li>
+      <li id="ref-2"><span>Foster D. <i>Generative Deep Learning.</i> 2nd ed. Sebastopol, CA: O’Reilly Media, 2023. Гл. 3, 4, 8.</span></li>
+      <li id="ref-3"><span>Kingma D. P., Welling M. <i>Auto-Encoding Variational Bayes.</i> ICLR, 2014. <a href="https://arxiv.org/abs/1312.6114">arXiv:1312.6114</a></span></li>
+      <li id="ref-4"><span>Goodfellow I. et al. <i>Generative Adversarial Nets.</i> NeurIPS, 2014. <a href="https://arxiv.org/abs/1406.2661">arXiv:1406.2661</a></span></li>
+      <li id="ref-5"><span>Ho J., Jain A., Abbeel P. <i>Denoising Diffusion Probabilistic Models.</i> NeurIPS, 2020. <a href="https://arxiv.org/abs/2006.11239">arXiv:2006.11239</a></span></li>
+      <li id="ref-6"><span>Rombach R. et al. <i>High-Resolution Image Synthesis with Latent Diffusion Models.</i> CVPR, 2022. <a href="https://arxiv.org/abs/2112.10752">arXiv:2112.10752</a></span></li>
+      <li id="ref-7"><span>Xiao Z., Kreis K., Vahdat A. <i>Tackling the Generative Learning Trilemma with Denoising Diffusion GANs.</i> ICLR, 2022. <a href="https://arxiv.org/abs/2112.07804">arXiv:2112.07804</a></span></li>
+      <li id="ref-8"><span>Dhariwal P., Nichol A. <i>Diffusion Models Beat GANs on Image Synthesis.</i> NeurIPS, 2021. <a href="https://arxiv.org/abs/2105.05233">arXiv:2105.05233</a></span></li>
+      <li id="ref-9"><span>Karras T., Laine S., Aila T. <i>A Style-Based Generator Architecture for Generative Adversarial Networks.</i> CVPR, 2019. <a href="https://arxiv.org/abs/1812.04948">arXiv:1812.04948</a></span></li>
+      <li id="ref-10"><span>Xu L. et al. <i>Modeling Tabular Data using Conditional GAN.</i> NeurIPS, 2019. <a href="https://arxiv.org/abs/1907.00503">arXiv:1907.00503</a></span></li>
+      <li id="ref-11"><span>Shinde P. et al. <i>Recent Advances in Generative AI and Large Language Models: Current Status, Challenges, and Perspectives.</i> IEEE Transactions on Artificial Intelligence, 2024. Vol. 5, No. 12. P. 5873–5893.</span></li>
+      <li id="ref-12"><span>Kingma D. P., Salimans T., Poole B., Ho J. <i>Variational Diffusion Models.</i> NeurIPS, 2021. <a href="https://arxiv.org/abs/2107.00630">arXiv:2107.00630</a></span></li>
+      <li id="ref-13"><span>Higgins I. et al. <i>β-VAE: Learning Basic Visual Concepts with a Constrained Variational Framework.</i> ICLR, 2017.</span></li>
+      <li id="ref-14"><span>Song J., Meng C., Ermon S. <i>Denoising Diffusion Implicit Models.</i> ICLR, 2021. <a href="https://arxiv.org/abs/2010.02502">arXiv:2010.02502</a></span></li>
+      <li id="ref-15"><span>Song Y., Dhariwal P., Chen M., Sutskever I. <i>Consistency Models.</i> ICML, 2023. <a href="https://arxiv.org/abs/2303.01469">arXiv:2303.01469</a></span></li>
+      <li id="ref-16"><span>Kadkhodaie Z., Guth F., Simoncelli E. P., Mallat S. <i>Generalization in Diffusion Models Arises from Geometry-Adaptive Harmonic Representations.</i> ICLR, 2024. <a href="https://arxiv.org/abs/2310.02557">arXiv:2310.02557</a></span></li>
+      <li id="ref-17"><span>Kynkäänniemi T. et al. <i>Improved Precision and Recall Metric for Assessing Generative Models.</i> NeurIPS, 2019. <a href="https://arxiv.org/abs/1904.06991">arXiv:1904.06991</a></span></li>
+    </ol>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div>
+      <div class="who">Алихан Амирхан</div>
+      <div class="mono">Магистрант 1 курса · 7M06115 Наука о данных · группа 1940468<br>КазНУ им. аль-Фараби · 2026</div>
+    </div>
+    <div class="mono" style="text-align:left">Дисциплина: Генеративный ИИ: технологии и приложения<br>Преподаватель: Абзалиева С. А.</div>
+  </div>
+</footer>
+

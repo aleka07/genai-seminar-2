@@ -1,0 +1,130 @@
+/* ---------- Top bar: brand · section nav with sliding indicator · sound; 1px reading progress ---------- */
+.ch-bar .ch-in { display: flex; align-items: center; justify-content: flex-start; gap: 0; min-height: 52px; position: relative; }
+.ch-where {
+  color: var(--muted); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  min-width: 0; display: inline-flex; align-items: center; min-height: 44px; margin-right: 24px;
+}
+.ch-where b { color: var(--fg); font-weight: 500; }
+.ch-where:hover b { text-decoration: underline; text-underline-offset: 5px; text-decoration-color: var(--line-strong); }
+
+.ch-nav { position: relative; margin-left: auto; align-self: stretch; display: flex; }
+.ch-nav ul { display: flex; margin: 0; padding: 0; list-style: none; }
+.ch-nav li { display: flex; }
+.ch-nav a {
+  display: inline-flex; align-items: center; gap: 8px; padding: 0 13px; min-height: 52px;
+  color: var(--muted); text-decoration: none; white-space: nowrap;
+  font: 500 12px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase;
+  transition: color .25s;
+}
+.ch-nav a:hover, .ch-nav a[aria-current="true"] { color: var(--fg); }
+.ch-nav a:focus-visible { outline-offset: -6px; }
+.ch-n { font-size: 10.5px; letter-spacing: .04em; opacity: .55; font-variant-numeric: tabular-nums; }
+.ch-nav a[aria-current="true"] .ch-n { opacity: .8; }
+/* the indicator: a 2px fg line on the bar's bottom edge, under the active item */
+.ch-ind {
+  position: absolute; left: 0; bottom: -1px; height: 2px; width: 40px;
+  background: var(--fg); opacity: 0; pointer-events: none; z-index: 2;
+  transform: translateX(var(--x, 0px)); width: var(--w, 40px);
+}
+.ch-nav.has-active .ch-ind { opacity: 1; }
+.ch-nav.ind-anim .ch-ind { transition: transform .5s cubic-bezier(.65,0,.25,1), width .5s cubic-bezier(.65,0,.25,1), opacity .3s; }
+
+/* sound: hairline separator, pill, first-visit hint (pulse + tooltip) */
+.ch-snd { position: relative; display: flex; align-items: center; margin-left: 14px; padding-left: 18px; flex: none; }
+.ch-snd::before { content: ""; position: absolute; left: 0; top: 50%; height: 22px; margin-top: -11px; border-left: 1px solid var(--line); }
+.ch-bar .snd { position: relative; }
+.ch-bar .snd::after {
+  content: ""; position: absolute; inset: -1px; border-radius: inherit; pointer-events: none;
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--fg) 45%, transparent); opacity: 0;
+}
+.ch-tip {
+  position: absolute; top: calc(100% + 12px); right: 0; z-index: 3;
+  padding: 9px 12px 8px; border-radius: 6px; white-space: nowrap;
+  background: var(--fg); color: var(--bg); font-size: 11px; letter-spacing: .04em;
+  opacity: 0; transform: translateY(-4px); pointer-events: none;
+  transition: opacity .3s, transform .3s cubic-bezier(.2,.8,.2,1);
+}
+.ch-tip::before { content: ""; position: absolute; top: -4px; right: 58px; width: 8px; height: 8px; background: var(--fg); transform: rotate(45deg); border-radius: 1px; }
+.ch-snd.hint .ch-tip,
+.ch-snd .snd[aria-pressed="false"]:hover + .ch-tip,
+.ch-snd .snd[aria-pressed="false"]:focus-visible + .ch-tip { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .ch-snd.hint .snd::after { animation: ch-pulse 1.9s cubic-bezier(.2,.7,.2,1) 3; }
+  @keyframes ch-pulse {
+    0% { opacity: 1; box-shadow: 0 0 0 0 color-mix(in srgb, var(--fg) 45%, transparent); }
+    100% { opacity: 1; box-shadow: 0 0 0 10px color-mix(in srgb, var(--fg) 0%, transparent); }
+  }
+}
+.ch-snd.hint .snd { border-color: var(--fg); }
+
+/* reading progress: 1px along the bar's bottom edge */
+.ch-prog { position: absolute; left: 0; right: 0; bottom: -1px; height: 1px; pointer-events: none; overflow: hidden; }
+.ch-prog i { display: block; height: 100%; background: var(--fg); opacity: .75; transform-origin: 0 50%; transform: scaleX(0); will-change: transform; }
+
+/* phone: «Содержание» button + sheet */
+.ch-toc {
+  display: none; align-items: center; gap: 9px; min-height: 44px; padding: 0 14px 0 12px; margin-left: auto;
+  background: transparent; color: var(--fg); border: 1px solid var(--line-strong); border-radius: 999px;
+  font: 500 12px/1 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; cursor: pointer; min-width: 0;
+  transition: border-color .2s, background .2s;
+}
+.ch-toc:hover, .ch-toc[aria-expanded="true"] { border-color: var(--fg); }
+.ch-toc svg { width: 16px; height: 16px; flex: none; }
+.ch-toc-lbl { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ch-sheet {
+  position: absolute; left: 0; right: 0; top: 100%; z-index: 4;
+  background: var(--bg); border-bottom: 1px solid var(--line-strong);
+  box-shadow: 0 24px 48px -24px rgba(0,0,0,.55);
+  opacity: 0; transform: translateY(-6px); transition: opacity .22s, transform .28s cubic-bezier(.2,.8,.2,1);
+}
+.ch-sheet.open { opacity: 1; transform: none; }
+.ch-bar .ch-sheet .wrap { display: block; min-height: 0; }
+.ch-sheet-h { color: var(--muted); margin: 14px 0 6px; font-size: 11px; }
+.ch-sheet ol { list-style: none; margin: 0 0 10px; padding: 0; }
+.ch-sheet a {
+  display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 8px;
+  min-height: 52px; border-top: 1px solid var(--line); text-decoration: none; color: var(--fg);
+}
+.ch-sheet .ch-n { color: var(--muted); font-size: 11px; opacity: 1; }
+.ch-sheet .ch-t { font: 500 17px/1.2 var(--f-display); letter-spacing: -.01em; }
+.ch-sheet .ch-d { color: var(--muted); font-size: 11px; text-align: right; }
+.ch-sheet a[aria-current="true"] .ch-t { text-decoration: underline; text-underline-offset: 6px; text-decoration-thickness: 1px; }
+.ch-sheet a[aria-current="true"] .ch-n { color: var(--fg); }
+
+@media (max-width: 1120px) {
+  .ch-long, .ch-nav .ch-n { display: none; }
+  .ch-nav a { padding: 0 11px; }
+}
+@media (max-width: 899px) {
+  .ch-nav { display: none; }
+  .ch-toc { display: inline-flex; }
+  .ch-snd { margin-left: 8px; padding-left: 0; }
+  .ch-snd::before { display: none; }
+}
+@media (max-width: 520px) {
+  .ch-bar .ch-in { min-height: 56px; }
+  .ch-where { margin-right: 10px; }
+  .ch-bar .snd { width: 44px; height: 44px; min-height: 44px; padding: 0; justify-content: center; gap: 0; }
+  .ch-bar #snd-lbl { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .ch-tip { right: -2px; white-space: normal; width: max-content; max-width: min(240px, calc(100vw - 32px)); line-height: 1.45; }
+  .ch-tip::before { right: 18px; }
+}
+
+/* sections land just under the sticky bar (skip the section's own top padding) */
+main .sec[id], main > section[id] { scroll-margin-top: calc(var(--chrome-bar-h, 53px) + 28px - clamp(72px, 10vw, 136px)); }
+#hero { scroll-margin-top: var(--chrome-bar-h, 53px); }
+
+/* ---------- Global scroll-reveal (used by every region) ----------
+   [data-reveal]            element fades/slides in once when >= 15% visible
+   [data-reveal-delay="n"]  extra delay n x 70ms
+   [data-reveal-stagger]    on a parent: its children reveal one after another (70ms apart)
+   Hidden state only exists when the script has set html.rv-ready (motion allowed, JS running). */
+@media (prefers-reduced-motion: no-preference) {
+  html.rv-ready :is([data-reveal], [data-reveal-stagger] > *):not(.rv-in) { opacity: 0; transform: translate3d(0, 22px, 0); }
+  html.rv-ready :is([data-reveal], [data-reveal-stagger] > *).rv-in:not(.rv-done) {
+    transition: opacity .9s cubic-bezier(.2,.7,.2,1), transform 1s cubic-bezier(.2,.7,.2,1);
+    transition-delay: calc(var(--rv-d, 0) * 70ms);
+  }
+}
+/* a section focused after a keyboard jump should not draw a page-wide outline */
+main section[tabindex="-1"]:focus { outline: none; }

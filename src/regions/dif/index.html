@@ -1,0 +1,44 @@
+        <figure class="fig difl" id="dif-lab" style="margin:0">
+          <p class="difl-hint mono" id="dif-hint-q"><svg viewBox="0 0 22 12" aria-hidden="true"><path d="M1 6h20M5 2 1 6l4 4M17 2l4 4-4 4"/></svg>потяни t или нажми на шаг цепочки</p>
+          <svg class="difl-chain" id="dif-chain" role="group" aria-label="Цепочка диффузии от x0 к xT: шаги можно выбрать"></svg>
+
+          <div class="difl-stage">
+            <canvas id="dif-cv" role="img" aria-label="Точки спирали на выбранном уровне шума"></canvas>
+            <span class="difl-tag difl-mode mono" id="dif-mode">q(x<sub>t</sub> | x<sub>0</sub>) · данные + шум</span>
+            <span class="difl-tag difl-demo mono" id="dif-demo" hidden><i></i>демо<span class="long">· любое действие его остановит</span></span>
+            <span class="difl-tag difl-legend mono" aria-hidden="true"><span><i class="lg-ref"></i>обучающие точки</span><span><i class="lg-pt"></i>x<sub>t</sub></span><span id="dif-lg-eps" hidden><i class="lg-arr"></i>x<sub>t</sub> → a<sub>t</sub>·x̂<sub>0</sub></span></span>
+          </div>
+
+          <div class="difl-trow">
+            <label class="mono difl-tlbl" for="dif-t">t</label>
+            <input id="dif-t" type="range" min="0" max="1000" step="10" value="0" aria-describedby="dif-read">
+          </div>
+          <div class="difl-readrow">
+            <p class="difl-read" id="dif-read" aria-live="off"><span>t = <b id="dif-r-t">0</b></span><span>сигнал a<sub>t</sub> = <b id="dif-r-a">1.00</b></span><span>шум b<sub>t</sub> = <b id="dif-r-b">0.00</b></span></p>
+            <svg class="difl-sched" id="dif-sched" viewBox="0 0 200 64" role="img" aria-label="Расписание шума: a и b в зависимости от t, косинусное"></svg>
+          </div>
+
+          <div class="difl-rev">
+            <div class="difl-revhead">
+              <p class="mono difl-h">Обратный процесс <span class="nt">p<sub>θ</sub></span> · DDIM</p>
+              <p class="difl-hint mono" id="dif-hint-p"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z"/></svg>выбери число шагов, сэмплер запустится</p>
+            </div>
+            <div class="difl-ks" role="group" aria-label="Число шагов сэмплера">
+              <button type="button" class="difl-k" id="dif-k2" data-k="2" aria-pressed="false"><b>2</b><span class="u">шага</span><span class="m" id="dif-m2">…</span><span class="bar"><i id="dif-b2"></i></span></button>
+              <button type="button" class="difl-k" id="dif-k5" data-k="5" aria-pressed="false"><b>5</b><span class="u">шагов</span><span class="m" id="dif-m5">…</span><span class="bar"><i id="dif-b5"></i></span></button>
+              <button type="button" class="difl-k" id="dif-k20" data-k="20" aria-pressed="true"><b>20</b><span class="u">шагов</span><span class="m" id="dif-m20">…</span><span class="bar"><i id="dif-b20"></i></span></button>
+              <button type="button" class="difl-k" id="dif-k100" data-k="100" aria-pressed="false"><b>100</b><span class="u">шагов</span><span class="m" id="dif-m100">…</span><span class="bar"><i id="dif-b100"></i></span></button>
+            </div>
+            <p class="difl-klegend mono">под числом: среднее расстояние до спирали (её радиус = 1) и покрытая доля спирали</p>
+            <div class="difl-actions">
+              <button type="button" class="difl-btn" id="dif-run"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 1.5v9l7.5-4.5z"/></svg>Сэмплировать заново</button>
+              <button type="button" class="difl-btn difl-tog" id="dif-eps" aria-pressed="false"><span class="sw" aria-hidden="true"></span>показать ε̂</button>
+            </div>
+            <p class="difl-verdict" id="dif-verdict" aria-live="polite">Сэмплер стартует из 500 точек чистого шума <span class="mo">𝒩(0, I)</span>.</p>
+            <div class="difl-math">
+              <p>x̂<sub>0</sub>(x<sub>t</sub>) = Σ<sub>i</sub> w<sub>i</sub>·x<sub>0</sub><sup>(i)</sup>,&nbsp; w<sub>i</sub> ∝ exp(−‖x<sub>t</sub> − a<sub>t</sub>·x<sub>0</sub><sup>(i)</sup>‖² / 2b<sub>t</sub>²)</p>
+              <p>ε̂ = (x<sub>t</sub> − a<sub>t</sub>·x̂<sub>0</sub>) / b<sub>t</sub>,&nbsp; x<sub>t′</sub> = a<sub>t′</sub>·x̂<sub>0</sub> + b<sub>t′</sub>·ε̂</p>
+            </div>
+          </div>
+          <figcaption class="cap">Вместо обученной сети здесь точный оптимальный денойзер для 500 обучающих точек, поэтому при многих шагах он склонен запоминать сами эти точки; настоящая сеть сглаживает поле ε̂ и обобщает.<a class="cite" href="#ref-16">[16]</a></figcaption>
+        </figure>

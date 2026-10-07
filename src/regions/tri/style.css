@@ -1,0 +1,229 @@
+/* Trilemma: triangle figure (left) + hint, legend controls, note (right); comparison table below. */
+/* base.css styles every `.tri svg` (max-width, auto margins); undo that for the small glyphs */
+#tri .tri-top svg { margin: 0; max-width: none; }
+#tri .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.tri {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-areas: "fig top" "fig side";
+  column-gap: clamp(28px, 5vw, 80px);
+  align-items: start;
+}
+.tri-fig { grid-area: fig; position: relative; width: 100%; max-width: 560px; align-self: center; }
+.tri-top { grid-area: top; align-self: end; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 20px; padding-bottom: 14px; }
+.tri-side { grid-area: side; min-width: 0; }
+
+/* ---------- hint + auto-cycle status ---------- */
+.tri-hint { margin: 0; display: inline-flex; align-items: center; gap: 10px; color: var(--fg); font-size: 11.5px; line-height: 1.4; transition: opacity .4s; }
+.tri.used .tri-hint { opacity: .72; }
+.tri-hint > span { text-wrap: balance; }
+.tri-glyph { width: 14px; height: 14px; flex: none; }
+.tri-glyph .g-hover { fill: var(--fg); }
+.tri-glyph .g-tap circle { stroke: var(--fg); stroke-width: 1.2; fill: var(--fg); }
+.tri-glyph .g-tap circle + circle { fill: none; }
+.tri-hint .v-tap, .tri-hint .w-below, .tri-glyph .g-tap { display: none; }
+@media (hover: none) {
+  .tri-hint .v-hov, .tri-glyph .g-hover { display: none; }
+  .tri-hint .v-tap { display: inline; } .tri-glyph .g-tap { display: inline; }
+}
+.tri-status { margin: 0; display: inline-flex; align-items: center; gap: 7px; color: var(--muted); font-size: 10.5px; white-space: nowrap; }
+.tri-status svg { width: 12px; height: 12px; flex: none; }
+.tri-status .st-ring { fill: none; stroke: currentColor; stroke-width: 1; stroke-dasharray: 2 2.2; transform-origin: 6px 6px; }
+.tri-status .st-play, .tri-status .st-pause { fill: currentColor; }
+.tri-status .st-pause { display: none; }
+.tri[data-mode="pause"] .st-play, .tri[data-mode="pin"] .st-play { display: none; }
+.tri[data-mode="pause"] .st-pause, .tri[data-mode="pin"] .st-pause { display: inline; }
+.tri[data-mode="auto"] .tri-status { color: var(--fg); }
+.tri[data-mode="off"] .tri-status { display: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .tri[data-mode="auto"] .st-ring { animation: triSpin 6s linear infinite; }
+  @keyframes triSpin { to { transform: rotate(360deg); } }
+}
+
+/* ---------- figure ---------- */
+#tri .tri-svg { display: block; width: 100%; max-width: none; margin: 0; height: auto; overflow: visible; }
+.tri-cv { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; transition: opacity .8s; }
+.t-hit { stroke: transparent; stroke-width: 36; stroke-linecap: round; pointer-events: stroke; cursor: pointer; }
+.t-box { fill: transparent; pointer-events: all; cursor: pointer; }
+.t-glow { stroke: var(--c); stroke-width: 16; stroke-linecap: round; opacity: 0; filter: url(#tri-blur); pointer-events: none; transition: opacity .35s; }
+.t-edge {
+  stroke: var(--c); stroke-width: 3; stroke-linecap: round; opacity: .9; pointer-events: none;
+  stroke-dasharray: 1 1.1; stroke-dashoffset: 0;
+  transition: opacity .3s, stroke-width .3s cubic-bezier(.2,.75,.2,1), stroke-dashoffset 1s cubic-bezier(.65,0,.25,1);
+}
+.t-m:hover .t-edge { stroke-width: 4.5; opacity: 1; }
+.t-mlbl { fill: var(--c); font: 500 13px var(--f-mono); letter-spacing: .06em; pointer-events: none; transition: opacity .3s; }
+.t-msub { fill: var(--muted); font: 400 11px var(--f-mono); pointer-events: none; transition: opacity .3s, fill .3s; }
+.t-name { fill: var(--fg); font: 500 15px var(--f-display); letter-spacing: -.01em; transition: opacity .35s; }
+.t-sub { fill: var(--muted); font: 400 11px var(--f-mono); letter-spacing: .03em; transition: opacity .3s; }
+.v-dot { fill: var(--bg); stroke: var(--fg); stroke-width: 1.5; transform-box: fill-box; transform-origin: center; transition: fill .3s, stroke .3s, opacity .35s, transform .45s cubic-bezier(.2,.8,.2,1); }
+.v-tag { fill: var(--c); font: 500 11.5px var(--f-mono); letter-spacing: .04em; opacity: 0; transition: opacity .35s; pointer-events: none; }
+
+/* highlight: edge thickens and glows, its two vertices fill, the opposite vertex dims and says what is sacrificed */
+.tri[data-hl] .t-edge { opacity: .3; }
+.tri[data-hl] .t-mlbl { opacity: .35; }
+.tri[data-hl] .t-msub { opacity: .3; }
+.tri[data-hl="vae"] .m-vae .t-edge, .tri[data-hl="gan"] .m-gan .t-edge, .tri[data-hl="dif"] .m-dif .t-edge { opacity: 1; stroke-width: 7; }
+.tri[data-hl="vae"] .m-vae .t-glow, .tri[data-hl="gan"] .m-gan .t-glow, .tri[data-hl="dif"] .m-dif .t-glow { opacity: .6; }
+.tri[data-hl="vae"] .m-vae :is(.t-mlbl, .t-msub), .tri[data-hl="gan"] .m-gan :is(.t-mlbl, .t-msub), .tri[data-hl="dif"] .m-dif :is(.t-mlbl, .t-msub) { opacity: 1; }
+.tri[data-hl="vae"] .m-vae .t-msub, .tri[data-hl="gan"] .m-gan .t-msub, .tri[data-hl="dif"] .m-dif .t-msub { fill: var(--fg); }
+.tri[data-hl="dif"] :is(.v-q, .v-d) .v-dot { fill: var(--dif); stroke: var(--dif); }
+.tri[data-hl="gan"] :is(.v-q, .v-s) .v-dot { fill: var(--gan); stroke: var(--gan); }
+.tri[data-hl="vae"] :is(.v-d, .v-s) .v-dot { fill: var(--vae); stroke: var(--vae); }
+.tri[data-hl="dif"] .v-s :is(.v-dot, .v-dim), .tri[data-hl="gan"] .v-d :is(.v-dot, .v-dim), .tri[data-hl="vae"] .v-q :is(.v-dot, .v-dim) { opacity: .3; }
+.tri[data-hl="dif"] .v-s .v-tag, .tri[data-hl="gan"] .v-d .v-tag, .tri[data-hl="vae"] .v-q .v-tag { opacity: 1; }
+.tri[data-hl="vae"] .v-q .t-sub { opacity: 0; }
+
+/* ---------- hybrids hub ---------- */
+.t-hyb { pointer-events: none; }
+.h-disc {
+  fill: var(--bg); fill-opacity: 0; stroke: var(--muted); stroke-width: 1; stroke-dasharray: 2 4; vector-effect: non-scaling-stroke;
+  transform-box: fill-box; transform-origin: center;
+  transition: transform .5s cubic-bezier(.2,.75,.2,1), fill-opacity .4s, stroke .3s, opacity .4s;
+}
+.h-rest text { fill: var(--muted); font: 400 11px var(--f-mono); transition: opacity .25s, fill .25s; }
+.h-plus { stroke: var(--muted); stroke-width: 1.2; transition: stroke .25s, opacity .25s; }
+.h-names text { fill: var(--fg); font: 500 11.5px var(--f-mono); letter-spacing: .01em; opacity: 0; transition: opacity .3s; }
+.h-names .h-note { fill: var(--muted); font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; }
+.h-arrows line { stroke: var(--c); stroke-width: 2.2; stroke-linecap: round; stroke-dasharray: 1 1.1; stroke-dashoffset: 1.05; transition: stroke-dashoffset .45s cubic-bezier(.2,.75,.2,1); }
+.h-arrows path { fill: var(--c); opacity: 0; transition: opacity .2s; }
+.tri.hub-hover .h-disc { stroke: var(--fg); }
+.tri.hub-hover .h-rest text, .tri.hub-hover .h-plus { fill: var(--fg); stroke: var(--fg); }
+.tri.hub-hover .h-rest text { stroke: none; }
+.tri.hub-open .h-disc { transform: scale(1.84); fill-opacity: .9; stroke: var(--line-strong); stroke-dasharray: 3 3; }
+.tri.hub-open .h-rest text, .tri.hub-open .h-plus { opacity: 0; }
+.tri.hub-open .h-names text { opacity: 1; transition-delay: .18s; }
+.tri.hub-open .h-arrows line { stroke-dashoffset: 0; transition-delay: .12s; }
+.tri.hub-open .h-arrows g:nth-child(2) line { transition-delay: .2s; }
+.tri.hub-open .h-arrows g:nth-child(3) line { transition-delay: .28s; }
+.tri.hub-open .h-arrows path { opacity: 1; transition-delay: .5s; }
+.tri.hub-open .t-edge { opacity: .55; }
+.tri.hub-open .t-mlbl, .tri.hub-open .t-msub { opacity: .55; }
+@media (prefers-reduced-motion: no-preference) {
+  .tri:not(.hub-open):not(.pre) .h-disc { animation: triHubSpin 24s linear infinite; }
+  @keyframes triHubSpin { to { transform: rotate(360deg); } }
+}
+.tri-hub {
+  position: absolute; left: 50%; top: 51.03%; width: 19%; aspect-ratio: 1; transform: translate(-50%, -50%);
+  padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; z-index: 1;
+}
+.tri.hub-open .tri-hub { width: 33.5%; }
+.tri-hub:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+
+/* ---------- legend: rows that read as controls ---------- */
+.tri-legend { display: grid; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+.tri-legend li { border-bottom: 1px solid var(--line); padding-block: 4px; }
+.tri-legend button {
+  position: relative; width: calc(100% + 28px); margin: 0 -14px;
+  display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; gap: 4px 16px; align-items: start; text-align: left;
+  padding: 13px 14px 14px; background: transparent; border: 0; border-radius: 8px; color: var(--fg); cursor: pointer; font: inherit;
+  transition: background-color .25s;
+  -webkit-tap-highlight-color: transparent;
+}
+.tri-legend button:hover { background-color: color-mix(in srgb, var(--fg) 4.5%, transparent); }
+.tri-legend button:active { background-color: color-mix(in srgb, var(--fg) 8%, transparent); }
+.tri-legend .is-hl button { background-color: color-mix(in srgb, var(--c) 10%, transparent); }
+.tri-legend button:focus-visible { outline: 2px solid var(--fg); outline-offset: 0; }
+.ti-dot { width: 13px; height: 13px; margin-top: 5px; border-radius: 50%; border: 2px solid var(--c); transition: background-color .25s, box-shadow .25s; }
+.tri-legend button:hover .ti-dot, .tri-legend .is-hl .ti-dot { background: var(--c); }
+.tri-legend button[aria-pressed="true"] .ti-dot { background: var(--c); box-shadow: 0 0 0 4px color-mix(in srgb, var(--c) 28%, transparent); }
+.ti-main { display: grid; gap: 4px; min-width: 0; }
+.ti-main b { font: 500 16px/1.25 var(--f-display); letter-spacing: -.01em; transition: color .25s; }
+.ti-main .w { color: var(--muted); font-size: 15.5px; line-height: 1.5; }
+.tri-legend button:hover b, .tri-legend .is-hl b { color: var(--c); }
+.ti-pin { font-size: 10px; color: var(--muted); padding-top: 4px; white-space: nowrap; opacity: 0; transition: opacity .2s; }
+.ti-pin .pin-on { display: none; color: var(--fg); }
+.tri-legend button:hover .ti-pin, .tri-legend button:focus-visible .ti-pin { opacity: 1; }
+.tri-legend button[aria-pressed="true"] .ti-pin { opacity: 1; }
+.tri-legend button[aria-pressed="true"] .pin-on { display: inline; }
+.tri-legend button[aria-pressed="true"] .pin-off { display: none; }
+.ti-prog { position: absolute; left: 14px; right: 14px; bottom: 0; height: 2px; border-radius: 2px; background: var(--c); transform-origin: left center; transform: scaleX(var(--p, 0)); opacity: 0; transition: opacity .3s; }
+.tri.is-auto .is-hl .ti-prog { opacity: .9; }
+@media (hover: none) { .tri-legend button:not([aria-pressed="true"]) .ti-pin { display: none; } }
+.tri-note { margin: 22px 0 0; color: var(--muted); font-size: 15.5px; line-height: 1.55; text-wrap: pretty; transition: color .3s; }
+.tri.hub-open .tri-note { color: var(--fg); }
+
+/* ---------- entrance (only when JS added .pre; reduced motion never gets it) ---------- */
+.tri.pre .t-edge { stroke-dashoffset: 1.05; }
+.tri.pre .v-dot { transform: scale(0); }
+.tri.pre :is(.t-name, .t-sub, .t-mlbl, .t-msub, .h-rest, .h-disc), .tri.pre .tri-cv { opacity: 0; }
+.tri.entering :is(.t-name, .t-sub, .t-mlbl, .t-msub, .h-rest) { transition: opacity .6s ease .95s; }
+.tri.entering .h-disc { transition: opacity .6s ease 1.1s; }
+.tri.entering .tri-cv { transition: opacity .9s ease .9s; }
+.tri.entering .m-gan .t-edge { transition-delay: .16s; }
+.tri.entering .m-vae .t-edge { transition-delay: .32s; }
+.tri.entering .v-q .v-dot { transition-delay: .5s; }
+.tri.entering .v-d .v-dot { transition-delay: .62s; }
+.tri.entering .v-s .v-dot { transition-delay: .74s; }
+
+/* ---------- comparison table ---------- */
+.cmp-hint { display: none; }
+.cmp-wrap { margin-top: clamp(40px, 5vw, 72px); overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+.cmp-wrap:focus-visible { outline-offset: 4px; }
+table.cmp { width: 100%; min-width: 760px; border-collapse: separate; border-spacing: 0; font-size: 15.5px; line-height: 1.45; }
+.cmp th, .cmp td { text-align: left; vertical-align: top; padding: 15px 20px 15px 14px; border-bottom: 1px solid var(--line); transition: background-color .2s; }
+.cmp thead th { font: 500 15px/1.2 var(--f-display); padding-top: 6px; padding-bottom: 13px; border-bottom: 1px solid var(--line-strong); vertical-align: bottom; transition: color .25s, box-shadow .25s; }
+.cmp thead th span { display: inline-flex; align-items: center; gap: 9px; }
+.cmp tbody th { font: 400 11px/1.5 var(--f-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); width: 19%; padding-left: 0; padding-top: 18px; transition: color .2s, background-color .2s; }
+.cmp thead th:first-child { padding-left: 0; }
+.cmp td { width: 27%; }
+.cmp tbody th, .cmp thead th:first-child { position: sticky; left: 0; z-index: 1; background-color: var(--bg); }
+.cmp-wrap.is-scrolled .cmp tbody th, .cmp-wrap.is-scrolled .cmp thead th:first-child { box-shadow: inset -1px 0 0 var(--line-strong); }
+/* row hover (opaque so the sticky column still covers scrolled cells) */
+.cmp tbody tr:hover > * { background-color: color-mix(in srgb, var(--fg) 3.5%, var(--bg)); }
+.cmp tbody tr:hover > th { color: var(--fg); }
+/* column highlight: hover a column, or a model in the triangle */
+.cmp[data-col="vae"] .m-vae, .cmp[data-col="gan"] .m-gan, .cmp[data-col="dif"] .m-dif { background-image: linear-gradient(color-mix(in srgb, var(--c) 9%, transparent), color-mix(in srgb, var(--c) 9%, transparent)); }
+.cmp[data-col="vae"] thead .m-vae, .cmp[data-col="gan"] thead .m-gan, .cmp[data-col="dif"] thead .m-dif { box-shadow: inset 0 -2px 0 var(--c); }
+.cmp[data-tri="vae"] thead .m-vae, .cmp[data-tri="gan"] thead .m-gan, .cmp[data-tri="dif"] thead .m-dif { color: var(--c); }
+.cmp tbody td[data-c] { cursor: default; }
+.meter { display: inline-flex; gap: 5px; margin-right: 10px; vertical-align: 1px; }
+.meter i { width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--c); transition: background-color .25s, transform .3s cubic-bezier(.2,.8,.2,1); }
+.meter i.on { background: var(--c); }
+.cmp.pre .meter i.on:not(.lit) { background: transparent; transform: scale(.7); }
+.cmp .sm { color: var(--muted); }
+.cmp tbody tr:hover .sm, .cmp[data-col="vae"] .m-vae .sm, .cmp[data-col="gan"] .m-gan .sm, .cmp[data-col="dif"] .m-dif .sm { color: var(--fg); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 900px) {
+  .tri { grid-template-columns: minmax(0, 1fr); grid-template-areas: "top" "fig" "side"; }
+  .tri-fig { max-width: 480px; margin-inline: auto; margin-block: 8px 28px; }
+  .tri-top { padding-bottom: 6px; }
+  .tri-hint .w-side { display: none; } .tri-hint .w-below { display: inline; }
+}
+@media (max-width: 760px) {
+  .cmp-hint.show { display: flex; align-items: center; gap: 8px; margin: clamp(40px, 5vw, 72px) 0 10px; color: var(--muted); font-size: 11px; transition: opacity .4s; }
+  .cmp-hint.show + .cmp-wrap { margin-top: 0; }
+  .cmp-hint.used { opacity: .45; }
+  .cmp-hint span { display: inline-block; color: var(--fg); }
+  table.cmp { min-width: 640px; font-size: 14.5px; }
+  .cmp tbody th { width: 112px; min-width: 112px; padding-right: 12px; font-size: 10.5px; }
+  .cmp th, .cmp td { padding-right: 14px; }
+}
+@media (max-width: 760px) and (prefers-reduced-motion: no-preference) {
+  .cmp-hint:not(.used) span:first-child { animation: triNudgeL 1.6s ease-in-out infinite; }
+  .cmp-hint:not(.used) span:last-child { animation: triNudgeR 1.6s ease-in-out infinite; }
+  @keyframes triNudgeL { 50% { transform: translateX(-3px); } }
+  @keyframes triNudgeR { 50% { transform: translateX(3px); } }
+}
+@media (max-width: 520px) {
+  .t-name { font-size: 20px; }
+  .v-d :is(.t-name, .v-tag) { transform: translateX(-16px); }
+  .v-s :is(.t-name, .v-tag) { transform: translateX(16px); }
+  .t-mlbl { font-size: 17px; }
+  .t-msub, .t-sub { display: none; }
+  .v-tag { font-size: 16px; }
+  .h-rest text { font-size: 16px; }
+  .h-rest text:nth-of-type(n+2), .h-plus { display: none; }
+  .h-rest text:first-of-type { transform: translateY(17px); }
+  .h-names text { font-size: 14.5px; }
+  .v-q .t-name { transform: translateY(-7px); }
+  .v-q .v-tag { transform: translateY(-6px); }
+  .h-names .h-note { font-size: 12px; }
+  .tri-legend button { width: calc(100% + 16px); margin: 0 -8px; padding: 12px 8px 13px; gap: 4px 12px; }
+  .ti-prog { left: 8px; right: 8px; }
+  .ti-main b { font-size: 15px; }
+  .ti-main .w { font-size: 15px; }
+  .tri-note { font-size: 15px; }
+}
